@@ -13,17 +13,18 @@ public class UsersImport : IDataImport
             new()
             {
                 Id = RoleType.AdminId,
+                Login = RoleType.Admin,
                 Email = RoleType.Admin,
                 HashedPassword = RoleType.Admin,
-                RoleId = RoleType.AdminId
             },
             new()
             {
-                Id = RoleType.ModeratorId,
+                Id = RoleType.ModeratorId, 
                 Email = RoleType.Moderator,
+                Login = RoleType.Moderator,
                 HashedPassword = RoleType.Moderator,
-                RoleId = RoleType.ModeratorId
             }
         };
+        builder.Entity<User>().HasData(users);
     }
 }

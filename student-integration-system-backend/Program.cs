@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IDataImport, RolesImport>();
 builder.Services.AddScoped<IDataImport, UsersImport>();
+builder.Services.AddScoped<IDataImport, UserRolesImport>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
