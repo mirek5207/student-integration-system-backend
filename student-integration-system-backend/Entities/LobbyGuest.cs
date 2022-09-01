@@ -2,8 +2,9 @@
 
 public class LobbyGuest
 {
+    //public int Id { get; set; }
     public int ClientId { get; set; }
     public int LobbyId { get; set; }
-    public virtual Client Client { get; set; }
     public virtual Lobby Lobby { get; set; }
+    public virtual Client Client { get; set; }
 }

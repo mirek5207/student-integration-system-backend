@@ -15,8 +15,8 @@ public class AppDbContext : DbContext
     public DbSet<LobbyGuest> LobbyGuests { get; set; }
     public DbSet<LobbyOwner> LobbyOwners { get; set; }
     public DbSet<Moderator> Moderators { get; set; }
-    public DbSet<Place> Places { get; set; }
     public DbSet<PlaceOwner> PlacesOwners { get; set; }
+    public DbSet<Place> Places { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
@@ -29,7 +29,7 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserRole>().HasKey(sc => new { sc.UserId, sc.RoleId });
-        modelBuilder.Entity<LobbyGuest>().HasKey(lg => new { lg.ClientId, lg.LobbyId });
+        modelBuilder.Entity<LobbyGuest>().HasKey(r => new { r.LobbyId, r.ClientId });
         foreach (var dataImport in _dataImport)
         {
             dataImport.Seed(modelBuilder);

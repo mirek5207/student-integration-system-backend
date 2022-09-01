@@ -5,5 +5,6 @@ public class CustomPlace
     public int Id { get; set; }
     public string Location { get; set; }
     public string? Description { get; set; }
-    public virtual List<Client> Clients { get; set; }
+    public int ClientId { get; set; }
+    public virtual Client Client { get; set; }
 }

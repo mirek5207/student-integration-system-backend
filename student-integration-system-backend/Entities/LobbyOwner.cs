@@ -3,5 +3,6 @@
 public class LobbyOwner
 {
     public int Id { get; set; }
-    public virtual List<Client> Clients { get; set; }
+    public int ClientId { get; set; }
+    public virtual Client Client { get; set; }
 }
