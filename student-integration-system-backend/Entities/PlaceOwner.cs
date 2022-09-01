@@ -7,4 +7,5 @@ public class PlaceOwner
     public string SurName { get; set; }
     public int UserId { get; set; }
     public virtual User User { get; set; }
+    public virtual List<Place> Places { get; set; }
 }

@@ -6,8 +6,11 @@ public class Lobby
     public int MaxSeats { get; set; }
     public string Name { get; set; }
     public int? PlaceId { get; set; }
-    public int? CustomPlace { get; set; }
+    public int? CustomPlaceId { get; set; }
     public int LobbyOwnerId { get; set; }
     public virtual LobbyOwner LobbyOwner { get; set; }
+    public virtual Place Place { get; set; }
+    public virtual CustomPlace CustomPlace { get; set; }
+    public virtual List<LobbyGuest> LobbyGuests { get; set; }
     
 }
