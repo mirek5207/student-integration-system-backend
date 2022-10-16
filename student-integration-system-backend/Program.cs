@@ -11,6 +11,7 @@ using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.ClientService;
+using student_integration_system_backend.Services.ModeratorService;
 using student_integration_system_backend.Services.UserRoleService;
 using student_integration_system_backend.Services.UserService;
 
@@ -49,12 +50,14 @@ builder.Services.AddScoped<IClientService, ClientServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 builder.Services.AddScoped<IUserRoleService, UserRoleServiceImpl>();
 builder.Services.AddScoped<IAccountService, AccountServiceImpl>();
+builder.Services.AddScoped<IModeratorService, ModeratorServiceImpl>();
 
 
 //Fluent validation
 builder.Services.AddFluentValidation();
 builder.Services.AddFluentValidationRulesToSwagger();
 builder.Services.AddScoped<IValidator<ClientSignUpRequest>, ClientSignUpRequestValidator>();
+builder.Services.AddScoped<IValidator<ModeratorSignUpRequest>, ModeratorSignUpRequestValidator>();
 
 
 
