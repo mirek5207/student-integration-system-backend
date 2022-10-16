@@ -1,21 +1,67 @@
+using System.Reflection;
+using System.Text.Json.Serialization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using student_integration_system_backend.Data.Import;
 using student_integration_system_backend.Entities;
+using student_integration_system_backend.Models.Request;
+using student_integration_system_backend.Services.AccountService;
+using student_integration_system_backend.Services.ClientService;
+using student_integration_system_backend.Services.UserRoleService;
+using student_integration_system_backend.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "STUDENT INTEGRATION SYSTEM API",
+    });
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    options.TagActionsBy(api =>
+    {
+        if (api.GroupName != null)
+            return new[] {api.GroupName};
+        if (api.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
+            return new[] {controllerActionDescriptor.ControllerName};
+
+        throw new InvalidOperationException("Unable to determine tag for endpoint.");
+    });
+    options.DocInclusionPredicate((_, _) => true);
+});
+
+//services
+builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddScoped<IDataImport, RolesImport>();
 builder.Services.AddScoped<IDataImport, UsersImport>();
 builder.Services.AddScoped<IDataImport, UserRolesImport>();
+builder.Services.AddScoped<IClientService, ClientServiceImpl>();
+builder.Services.AddScoped<IUserService, UserServiceImpl>();
+builder.Services.AddScoped<IUserRoleService, UserRoleServiceImpl>();
+builder.Services.AddScoped<IAccountService, AccountServiceImpl>();
 
+
+//Fluent validation
+builder.Services.AddFluentValidation();
+builder.Services.AddFluentValidationRulesToSwagger();
+builder.Services.AddScoped<IValidator<ClientSignUpRequest>, ClientSignUpRequestValidator>();
+
+
+
+//Database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     options.UseNpgsql(builder.Configuration.GetConnectionString("AppDb") ?? throw new InvalidOperationException());
 });
 
