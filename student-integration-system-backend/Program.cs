@@ -68,7 +68,7 @@ builder.Services.AddFluentValidationRulesToSwagger();
 builder.Services.AddScoped<IValidator<ClientSignUpRequest>, ClientSignUpRequestValidator>();
 builder.Services.AddScoped<IValidator<ModeratorSignUpRequest>, ModeratorSignUpRequestValidator>();
 builder.Services.AddScoped<IValidator<PlaceOwnerSignUpRequest>, PlaceOwnerSignUpRequestValidator>();
-
+builder.Services.AddScoped<IValidator<SignInRequest>, SignInRequestValidator>();
 
 
 //Database connection

@@ -1,4 +1,5 @@
 ﻿using student_integration_system_backend.Entities;
+using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.UserRoleService;
 
@@ -31,5 +32,12 @@ public class UserServiceImpl : IUserService
         _accountService.CreateAccount(user);
         return user;
 
+    }
+
+    public User GetUserByLogin(string login)
+    {
+        var user = _dbContext.Users.FirstOrDefault(user => user.Login == login);
+        if (user == null) throw new NotFoundException("User not found");
+        return user;
     }
 }
