@@ -15,15 +15,17 @@ public class SignInRequestValidator : AbstractValidator<SignInRequest>
 {
     public SignInRequestValidator(AppDbContext dbContext)
     {
+        CascadeMode = CascadeMode.Stop;
         RuleFor(u => u.Login).Must((login) =>
         {
-            var user = dbContext.Users.FirstOrDefault(user => user.Login == login);
-            return user != null;
+            var user = dbContext.Users.Where(user => user.Login == login);
+            return user.Any();
         })
         .WithMessage("Login does not exist");
 
         RuleFor(u => new {u.Password, u.Login}).Must((u) =>
         {
+            
             var user = dbContext.Users.FirstOrDefault(us => us.Login == u.Login);
             
             return BCrypt.Net.BCrypt.Verify(u.Password,user.HashedPassword);
