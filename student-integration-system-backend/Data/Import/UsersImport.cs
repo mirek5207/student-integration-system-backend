@@ -15,14 +15,14 @@ public class UsersImport : IDataImport
                 Id = RoleType.AdminId,
                 Login = RoleType.Admin,
                 Email = RoleType.Admin,
-                HashedPassword = RoleType.Admin,
+                HashedPassword = BCrypt.Net.BCrypt.HashPassword(RoleType.Admin),
             },
             new()
             {
                 Id = RoleType.ModeratorId, 
                 Email = RoleType.Moderator,
                 Login = RoleType.Moderator,
-                HashedPassword = RoleType.Moderator,
+                HashedPassword = BCrypt.Net.BCrypt.HashPassword(RoleType.Moderator),
             }
         };
         builder.Entity<User>().HasData(users);
