@@ -19,6 +19,13 @@ public class UserRoleServiceImpl : IUserRoleService
             Role = role
         };
         _dbContext.UserRoles.Add(userRole);
-        _dbContext.SaveChangesAsync();
+        _dbContext.SaveChanges();
+    }
+
+    public Role GetRole(User user)
+    {
+        var userRole = _dbContext.UserRoles.FirstOrDefault(ur => ur.UserId == user.Id);
+        var role = _dbContext.Roles.FirstOrDefault(r => userRole != null && r.Id == userRole.RoleId);
+        return role;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
+using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Services.PlaceOwnerService;
 
 namespace student_integration_system_backend.Controllers;
@@ -21,7 +22,7 @@ public class PlaceOwnerController : ControllerBase
     /// Creates new place owner
     /// </summary>
     [HttpPost("createAccount")]
-    public ActionResult<PlaceOwner> CreatePlaceOwner(PlaceOwnerSignUpRequest request)
+    public ActionResult<AuthenticationResponse> CreatePlaceOwner(PlaceOwnerSignUpRequest request)
     {
         var response =  _placeOwnerService.RegisterPlaceOwner(request);
         return Ok(response);

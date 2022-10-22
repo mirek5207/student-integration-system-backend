@@ -1,7 +1,9 @@
 ﻿using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
+using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.AccountService;
+using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.UserRoleService;
 using student_integration_system_backend.Services.UserService;
 
@@ -11,19 +13,21 @@ public class ClientServiceImpl : IClientService
 {
     private readonly IUserService _userService;
     private readonly AppDbContext _dbContext;
+    private readonly IAuthService _authService;
 
-    public ClientServiceImpl(IUserService userService, AppDbContext dbContext)
+    public ClientServiceImpl(IUserService userService, AppDbContext dbContext, IAuthService authService)
     {
         _userService = userService;
         _dbContext = dbContext;
+        _authService = authService;
     }
 
-    public Client RegisterClient(ClientSignUpRequest request)
+    public AuthenticationResponse RegisterClient(ClientSignUpRequest request)
     {
         var role = _dbContext.Roles.Find(RoleType.ClientId);
         var user = _userService.CreateUser(request.Login, request.Email, request.HashedPassword, role);
-        var client = CreateClient(user, request.FirstName, request.SurName);
-        return client;
+        CreateClient(user, request.FirstName, request.SurName);
+        return _authService.GenerateJwtToken(user);
     }
 
     private Client CreateClient(User user, string firstName, string surname)

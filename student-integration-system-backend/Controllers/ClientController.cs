@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
+using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Services.ClientService;
 
 namespace student_integration_system_backend.Controllers;
@@ -21,7 +22,7 @@ public class ClientController : ControllerBase
     /// Creates new client
     /// </summary>
     [HttpPost("createAccount")]
-    public ActionResult<Client> CreateClient(ClientSignUpRequest request)
+    public ActionResult<AuthenticationResponse> CreateClient(ClientSignUpRequest request)
     {
         var response = _clientService.RegisterClient(request);
         return Ok(response);

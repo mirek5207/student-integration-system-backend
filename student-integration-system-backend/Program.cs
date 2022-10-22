@@ -10,6 +10,7 @@ using student_integration_system_backend.Data.Import;
 using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Services.AccountService;
+using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.ClientService;
 using student_integration_system_backend.Services.ModeratorService;
 using student_integration_system_backend.Services.PlaceOwnerService;
@@ -53,7 +54,7 @@ builder.Services.AddScoped<IUserRoleService, UserRoleServiceImpl>();
 builder.Services.AddScoped<IAccountService, AccountServiceImpl>();
 builder.Services.AddScoped<IModeratorService, ModeratorServiceImpl>();
 builder.Services.AddScoped<IPlaceOwnerService, PlaceOwnerServiceImpl>();
-
+builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 
 //Fluent validation
 builder.Services.AddFluentValidation();
