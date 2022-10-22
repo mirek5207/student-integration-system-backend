@@ -9,12 +9,12 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <DocumentationFile>bin\Debug\student-integration-system-backend.xml</DocumentationFile>
-      <NoWarn>1701;1702;1591</NoWarn>
+      <NoWarn>1701;1702;1591;CS0618</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <DocumentationFile>bin\Release\student-integration-system-backend.xml</DocumentationFile>
-      <NoWarn>1701;1702;1591</NoWarn>
+      <NoWarn>1701;1702;1591;CS0618</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
