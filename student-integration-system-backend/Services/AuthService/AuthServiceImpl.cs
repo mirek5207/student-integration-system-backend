@@ -43,7 +43,7 @@ public class AuthServiceImpl : IAuthService
 
     private List<Claim> CreateClaim(User user)
     {
-        var role = _userRoleService.GetRole(user);
+        var role = _userRoleService.GetUserRole(user);
         var claims = new List<Claim>();
         claims.Add(new Claim("id", user.Id.ToString()));
         claims.Add(new Claim(ClaimTypes.Role, role.Name));

@@ -1,4 +1,5 @@
 ﻿using student_integration_system_backend.Entities;
+using student_integration_system_backend.Exceptions;
 
 namespace student_integration_system_backend.Services.UserRoleService;
 
@@ -22,10 +23,11 @@ public class UserRoleServiceImpl : IUserRoleService
         _dbContext.SaveChanges();
     }
 
-    public Role GetRole(User user)
+    public Role GetUserRole(User user)
     {
         var userRole = _dbContext.UserRoles.FirstOrDefault(ur => ur.UserId == user.Id);
         var role = _dbContext.Roles.FirstOrDefault(r => userRole != null && r.Id == userRole.RoleId);
+        if (role == null) throw new NotFoundException("Role not found");
         return role;
     }
 }

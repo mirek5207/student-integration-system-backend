@@ -8,12 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using student_integration_system_backend.Data.Import;
 using student_integration_system_backend.Entities;
+using student_integration_system_backend.Middleware;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.ClientService;
 using student_integration_system_backend.Services.ModeratorService;
 using student_integration_system_backend.Services.PlaceOwnerService;
+using student_integration_system_backend.Services.RoleService;
 using student_integration_system_backend.Services.UserRoleService;
 using student_integration_system_backend.Services.UserService;
 
@@ -42,6 +44,9 @@ builder.Services.AddSwaggerGen(options =>
     options.DocInclusionPredicate((_, _) => true);
 });
 
+// Exception handling
+builder.Services.AddScoped<ExceptionHandlerMiddleware>();
+
 //services
 builder.Services.AddControllers();
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -55,6 +60,7 @@ builder.Services.AddScoped<IAccountService, AccountServiceImpl>();
 builder.Services.AddScoped<IModeratorService, ModeratorServiceImpl>();
 builder.Services.AddScoped<IPlaceOwnerService, PlaceOwnerServiceImpl>();
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
+builder.Services.AddScoped<IRoleService, RoleServiceImpl>();
 
 //Fluent validation
 builder.Services.AddFluentValidation();
@@ -80,6 +86,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
