@@ -30,4 +30,14 @@ public class AdminController : ControllerBase
         var response = _moderatorService.RegisterModerator(request);
         return Ok(response);
     }
+    /// <summary>
+    /// Update moderator data
+    /// </summary>
+    [HttpPatch("updateModeratorAccount")]
+    [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Moderator> UpdateModerator(UpdateModeratorRequest request, int moderatorId)
+    {
+        var response = _moderatorService.UpdateModerator(request, moderatorId);
+        return Ok(response);
+    }
 }

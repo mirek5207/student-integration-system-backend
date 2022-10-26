@@ -6,4 +6,5 @@ public interface IUserService
 {
     User CreateUser(string login, string email, string password, Role role);
     User GetUserByLogin(string login);
+    User GetUserById(int userId);
 }

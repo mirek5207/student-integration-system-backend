@@ -34,6 +34,12 @@ public class UserServiceImpl : IUserService
 
     }
 
+    public User GetUserById(int userId)
+    {
+        var user = _dbContext.Users.FirstOrDefault(user => user.Id == userId);
+        if (user == null) throw new NotFoundException("User not found");
+        return user;
+    }
     public User GetUserByLogin(string login)
     {
         var user = _dbContext.Users.FirstOrDefault(user => user.Login == login);

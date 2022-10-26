@@ -1,4 +1,5 @@
 ﻿using student_integration_system_backend.Entities;
+using student_integration_system_backend.Exceptions;
 
 namespace student_integration_system_backend.Services.AccountService;
 
@@ -22,5 +23,12 @@ public class AccountServiceImpl : IAccountService
         };
         _dbContext.Accounts.Add(account); 
         _dbContext.SaveChanges();
+    }
+
+    public Account GetAccountByUserId(int userId)
+    {
+        var account = _dbContext.Accounts.FirstOrDefault(account => account.UserId == userId);
+        if (account == null) throw new NotFoundException("Account not found");
+        return account;
     }
 }
