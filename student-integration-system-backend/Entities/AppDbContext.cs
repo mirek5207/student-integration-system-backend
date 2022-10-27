@@ -20,6 +20,7 @@ public class AppDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
+    public DbSet<Report> Reports { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext>options, IEnumerable<IDataImport> dataImport) : base(options)
     {
@@ -30,6 +31,7 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<UserRole>().HasKey(sc => new { sc.UserId, sc.RoleId });
         modelBuilder.Entity<LobbyGuest>().HasKey(r => new { r.LobbyId, r.ClientId });
+        modelBuilder.Entity<Report>().Property(p => p.ReportedUserId).IsRequired(false);
         foreach (var dataImport in _dataImport)
         {
             dataImport.Seed(modelBuilder);
