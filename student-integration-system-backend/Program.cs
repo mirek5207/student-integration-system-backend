@@ -63,12 +63,15 @@ builder.Services.AddSwaggerGen(options =>
 // Exception handling
 builder.Services.AddScoped<ExceptionHandlerMiddleware>();
 
-//services
-builder.Services.AddControllers();
-builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+//import data services
 builder.Services.AddScoped<IDataImport, RolesImport>();
 builder.Services.AddScoped<IDataImport, UsersImport>();
 builder.Services.AddScoped<IDataImport, UserRolesImport>();
+builder.Services.AddScoped<IDataImport, ReportImport>();
+
+//services
+builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddScoped<IClientService, ClientServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 builder.Services.AddScoped<IUserRoleService, UserRoleServiceImpl>();
