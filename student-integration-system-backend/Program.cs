@@ -91,6 +91,7 @@ builder.Services.AddScoped<IValidator<PlaceOwnerSignUpRequest>, PlaceOwnerSignUp
 builder.Services.AddScoped<IValidator<SignInRequest>, SignInRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateModeratorRequest>, UpdateModeratorRequestValidator>();
 builder.Services.AddScoped<IValidator<SystemReportRequest>, SystemReportRequestValidator >();
+builder.Services.AddScoped<IValidator<UserReportRequest>,UserReportRequestValidator >();
 
 
 //Database connection

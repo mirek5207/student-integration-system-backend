@@ -47,6 +47,24 @@ public class ReportServiceImpl : IReportService
         return report;
     }
 
+    public Report CreateUserReport(UserReportRequest request)
+    {
+        var reportingUser = _userService.GetUserById(request.ReportingUserId);
+        var reportedUser = _userService.GetUserById(request.ReportedUserId);
+        var report = new Report
+        {
+            Description = request.Description,
+            Status = ReportStatus.Unverified,
+            CreationDate = DateTime.Now,
+            ReportingUser = reportingUser,
+            ReportType = ReportType.UserReport,
+            ReportedUser = reportedUser
+        };
+        _dbContext.Reports.Add(report);
+        _dbContext.SaveChanges();
+        return report;
+    }
+
     private Report GetReportById(int reportId)
     {
         var report = _dbContext.Reports.FirstOrDefault(report => report.Id == reportId);

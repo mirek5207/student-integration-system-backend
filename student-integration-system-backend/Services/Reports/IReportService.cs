@@ -9,4 +9,5 @@ public interface IReportService
     IEnumerable<Report> GetAllReportsByReportType(ReportType reportType);
     Report UpdateStatusOfReport(int reportId, ReportStatus reportStatus);
     Report CreateSystemReport(SystemReportRequest request);
+    Report CreateUserReport(UserReportRequest request);
 }

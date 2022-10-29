@@ -33,4 +33,9 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.5" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Migrations\20221027212331_Initial.cs" />
+      <Compile Remove="Migrations\20221027212331_Initial.Designer.cs" />
+    </ItemGroup>
+
 </Project>
