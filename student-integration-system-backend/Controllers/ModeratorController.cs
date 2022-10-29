@@ -29,4 +29,14 @@ public class ModeratorController : ControllerBase
         return Ok(response);
     }
     
+    /// <summary>
+    /// Update status of user report(Unverified,InProgress,Verified)
+    /// </summary>
+    [HttpPatch("updateStatusOfUserReport")]
+    [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Report> UpdateStatusOfUserReport(int reportId, ReportStatus reportStatus)
+    {
+        var response = _reportService.UpdateStatusOfReport(reportId, reportStatus);
+        return response;
+    }
 }
