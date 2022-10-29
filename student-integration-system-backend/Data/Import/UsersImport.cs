@@ -26,5 +26,24 @@ public class UsersImport : IDataImport
             }
         };
         builder.Entity<User>().HasData(users);
+
+        var accounts = new List<Account>
+        {
+            new()
+            {
+                Id = RoleType.AdminId,
+                IsActive = true,
+                AccountCreationTime = DateTime.Now,
+                UserId = RoleType.AdminId
+            },
+            new()
+            {
+                Id = RoleType.ModeratorId,
+                IsActive = true,
+                AccountCreationTime = DateTime.Now,
+                UserId = RoleType.ModeratorId
+            }
+        };
+        builder.Entity<Account>().HasData(accounts);
     }
 }
