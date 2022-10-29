@@ -6,6 +6,7 @@ using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.ModeratorService;
+using student_integration_system_backend.Services.Reports;
 
 namespace student_integration_system_backend.Controllers;
 
@@ -14,10 +15,12 @@ namespace student_integration_system_backend.Controllers;
 public class AdminController : ControllerBase
 {
     private readonly IModeratorService _moderatorService;
+    private readonly IReportService _reportService;
 
-    public AdminController(IModeratorService moderatorService)
+    public AdminController(IModeratorService moderatorService, IReportService reportService)
     {
         _moderatorService = moderatorService;
+        _reportService = reportService;
     }
     
     /// <summary>
@@ -39,5 +42,27 @@ public class AdminController : ControllerBase
     {
         var response = _moderatorService.UpdateModerator(request, moderatorId);
         return Ok(response);
+    }
+
+    /// <summary>
+    /// Get all system reports
+    /// </summary>
+    [HttpGet("getSystemReports")]
+    [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<List<Report>> GetAllSystemReports()
+    {
+        var response = _reportService.GetAllReportsByReportType(ReportType.SystemErrorReport);
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// Update status of system report(Unverified,InProgress,Verified)
+    /// </summary>
+    [HttpPatch("updateStatusOfSystemReport")]
+    [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Report> UpdateStatusOfSystemReport(int reportId, ReportStatus reportStatus)
+    {
+        var response = _reportService.UpdateStatusOfReport(reportId, reportStatus);
+        return response;
     }
 }

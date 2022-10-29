@@ -18,6 +18,7 @@ using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.ClientService;
 using student_integration_system_backend.Services.ModeratorService;
 using student_integration_system_backend.Services.PlaceOwnerService;
+using student_integration_system_backend.Services.Reports;
 using student_integration_system_backend.Services.RoleService;
 using student_integration_system_backend.Services.UserRoleService;
 using student_integration_system_backend.Services.UserService;
@@ -38,7 +39,6 @@ builder.Services.AddSwaggerGen(options =>
     });
     
     options.OperationFilter<SecurityRequirementsOperationFilter>();
-    
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Version = "v1",
@@ -70,7 +70,7 @@ builder.Services.AddScoped<IDataImport, UserRolesImport>();
 builder.Services.AddScoped<IDataImport, ReportImport>();
 
 //services
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });;
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddScoped<IClientService, ClientServiceImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
@@ -80,6 +80,7 @@ builder.Services.AddScoped<IModeratorService, ModeratorServiceImpl>();
 builder.Services.AddScoped<IPlaceOwnerService, PlaceOwnerServiceImpl>();
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 builder.Services.AddScoped<IRoleService, RoleServiceImpl>();
+builder.Services.AddScoped<IReportService, ReportServiceImpl>();
 
 //Fluent validation
 builder.Services.AddFluentValidation();
@@ -89,6 +90,7 @@ builder.Services.AddScoped<IValidator<ModeratorSignUpRequest>, ModeratorSignUpRe
 builder.Services.AddScoped<IValidator<PlaceOwnerSignUpRequest>, PlaceOwnerSignUpRequestValidator>();
 builder.Services.AddScoped<IValidator<SignInRequest>, SignInRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateModeratorRequest>, UpdateModeratorRequestValidator>();
+builder.Services.AddScoped<IValidator<SystemReportRequest>, SystemReportRequestValidator >();
 
 
 //Database connection
