@@ -46,4 +46,5 @@ public class UserServiceImpl : IUserService
         if (user == null) throw new NotFoundException("User not found");
         return user;
     }
+    
 }

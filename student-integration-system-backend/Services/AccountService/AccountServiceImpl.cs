@@ -31,4 +31,12 @@ public class AccountServiceImpl : IAccountService
         if (account == null) throw new NotFoundException("Account not found");
         return account;
     }
+
+    public Account DeactivateAccount(int userId)
+    {
+        var account = GetAccountByUserId(userId);
+        account.IsActive = false;
+        _dbContext.SaveChanges();
+        return account;
+    }
 }

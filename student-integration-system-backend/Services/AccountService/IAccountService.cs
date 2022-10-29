@@ -6,4 +6,5 @@ public interface IAccountService
 {
     void CreateAccount(User user);
     Account GetAccountByUserId(int userId);
+    Account DeactivateAccount(int userId);
 }
