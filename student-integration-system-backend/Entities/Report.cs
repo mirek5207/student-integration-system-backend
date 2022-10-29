@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 
 namespace student_integration_system_backend.Entities;
 
