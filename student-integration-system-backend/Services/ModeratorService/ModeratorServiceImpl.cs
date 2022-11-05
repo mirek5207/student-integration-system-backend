@@ -61,9 +61,9 @@ public class ModeratorServiceImpl : IModeratorService
         return moderators;
     }
 
-    private Moderator GetModeratorById(int moderatorId)
+    public Moderator GetModeratorById(int moderatorId)
     {
-        var moderator = _dbContext.Moderators.FirstOrDefault(moderator => moderator.Id == moderatorId);
+        var moderator = _dbContext.Moderators.Include(moderator => moderator.User.Account).FirstOrDefault(moderator => moderator.Id == moderatorId);
         if (moderator == null) throw new NotFoundException("Moderator not found");
         return moderator;
     }
