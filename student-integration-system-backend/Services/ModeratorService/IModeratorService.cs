@@ -9,4 +9,5 @@ public interface IModeratorService
 {
    AuthenticationResponse RegisterModerator(ModeratorSignUpRequest request);
    Moderator UpdateModerator(UpdateModeratorRequest request, int moderatorId);
+   IEnumerable<Moderator> GetAllModerators();
 }

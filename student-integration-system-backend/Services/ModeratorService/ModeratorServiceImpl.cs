@@ -1,4 +1,5 @@
-﻿using student_integration_system_backend.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using student_integration_system_backend.Entities;
 using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Response;
@@ -51,6 +52,13 @@ public class ModeratorServiceImpl : IModeratorService
         _dbContext.SaveChanges();
         
         return moderator;
+    }
+
+    public IEnumerable<Moderator> GetAllModerators()
+    {
+        var moderators = _dbContext.Moderators.Include(moderator => moderator.User.Account).ToList();
+        if (moderators == null) throw new NotFoundException("Not found any moderator");
+        return moderators;
     }
 
     private Moderator GetModeratorById(int moderatorId)
