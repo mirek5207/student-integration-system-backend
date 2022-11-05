@@ -43,6 +43,28 @@ public class AdminController : ControllerBase
         var response = _moderatorService.UpdateModerator(request, moderatorId);
         return Ok(response);
     }
+    
+    /// <summary>
+    /// Get moderator by id
+    /// </summary>
+    [HttpGet("getModerator/{moderatorId:int}")]
+    [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Moderator> GetModeratorById(int moderatorId)
+    {
+        var response = _moderatorService.GetModeratorById(moderatorId);
+        return Ok(response);
+    }
+    
+    /// <summary>
+    /// Get all moderators
+    /// </summary>
+    [HttpGet("getModerators")]
+    [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<List<Moderator>> GetModerators()
+    {
+        var response = _moderatorService.GetAllModerators();
+        return Ok(response);
+    }
 
     /// <summary>
     /// Get all system reports

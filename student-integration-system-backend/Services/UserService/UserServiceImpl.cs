@@ -33,7 +33,7 @@ public class UserServiceImpl : IUserService
         return user;
 
     }
-
+    
     public User GetUserById(int userId)
     {
         var user = _dbContext.Users.FirstOrDefault(user => user.Id == userId);
@@ -46,5 +46,16 @@ public class UserServiceImpl : IUserService
         if (user == null) throw new NotFoundException("User not found");
         return user;
     }
+
+    public bool CheckIfEmailIsUnique(int userId, string email)
+    {
+        var emailExist = _dbContext.Users.Any(user => user.Email == email && user.Id != userId);
+        return !emailExist;
+    }
     
+    public bool CheckIfLoginIsUnique(int userId, string login)
+    {
+        var loginExist = _dbContext.Users.Any(user => user.Login == login && user.Id != userId);
+        return !loginExist;
+    }
 }

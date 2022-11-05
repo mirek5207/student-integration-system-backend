@@ -1,4 +1,5 @@
-﻿using student_integration_system_backend.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using student_integration_system_backend.Entities;
 using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Response;
@@ -42,20 +43,27 @@ public class ModeratorServiceImpl : IModeratorService
         var user = _userService.GetUserById(moderator.UserId);
         var account = _accountService.GetAccountByUserId(moderator.UserId);
         
-        moderator.FirstName = string.IsNullOrEmpty(request.FirstName)  ? moderator.FirstName : request.FirstName;
-        moderator.SurName = string.IsNullOrEmpty(request.SurName) ? moderator.FirstName : request.SurName;
-        user.Email = string.IsNullOrEmpty(request.Email) ? user.Email : request.Email;
-        user.Login = string.IsNullOrEmpty(request.Login) ? user.Login : request.Login;
-        user.HashedPassword = string.IsNullOrEmpty(request.HashedPassword) ? user.HashedPassword : BCrypt.Net.BCrypt.HashPassword(request.HashedPassword);
-        account.IsActive = request.IsAccountActive ?? account.IsActive;
-        
+        moderator.FirstName = request.FirstName;
+        moderator.SurName = request.SurName;
+        user.Email = _userService.CheckIfEmailIsUnique(user.Id,request.Email) ? request.Email : throw new BadRequestException("Email already exist");
+        user.Login = _userService.CheckIfLoginIsUnique(user.Id,request.Login) ? request.Login : throw new BadRequestException("Login already exist");
+        user.HashedPassword = BCrypt.Net.BCrypt.HashPassword(request.HashedPassword);
+        account.IsActive = request.IsAccountActive;
         _dbContext.SaveChanges();
+        
         return moderator;
     }
 
-    private Moderator GetModeratorById(int moderatorId)
+    public IEnumerable<Moderator> GetAllModerators()
     {
-        var moderator = _dbContext.Moderators.FirstOrDefault(moderator => moderator.Id == moderatorId);
+        var moderators = _dbContext.Moderators.Include(moderator => moderator.User.Account).ToList();
+        if (moderators == null) throw new NotFoundException("Not found any moderator");
+        return moderators;
+    }
+
+    public Moderator GetModeratorById(int moderatorId)
+    {
+        var moderator = _dbContext.Moderators.Include(moderator => moderator.User.Account).FirstOrDefault(moderator => moderator.Id == moderatorId);
         if (moderator == null) throw new NotFoundException("Moderator not found");
         return moderator;
     }
