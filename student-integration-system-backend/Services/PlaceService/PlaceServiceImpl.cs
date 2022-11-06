@@ -39,10 +39,30 @@ public class PlaceServiceImpl : IPlaceService
         _dbContext.SaveChanges();
     }
 
+    public Place UpdatePlace(int placeId, UpdatePlaceRequest request)
+    {
+        var place = GetPlaceById(placeId);
+        place.Latitude = request.Latitude;
+        place.Longitude = request.Longitude;
+        place.Name = request.Name;
+        place.NumberOfReservedSeats = request.NumberOfReservedSeats;
+        place.MaxSeatsAvailableForReservation = request.MaxSeatsAvailableForReservation;
+        _dbContext.SaveChanges();
+        return place;
+    }
+
     public Place GetPlaceById(int placeId)
     {
         var place = _dbContext.Places.FirstOrDefault(place => place.Id == placeId);
         if (place == null) throw new NotFoundException("Place not found");
         return place;
+    }
+
+    public IEnumerable<Place> GetAllPlacesOwnedByPlaceOwner(int userId)
+    {
+        var placeOwner = _ownerService.GetPlaceOwnerByUserId(userId);
+        if (placeOwner == null) throw new NotFoundException("Place owner not found");
+        var places = _dbContext.Places.ToList();
+        return places;
     }
 }

@@ -95,6 +95,7 @@ builder.Services.AddScoped<IValidator<UpdateModeratorRequest>, UpdateModeratorRe
 builder.Services.AddScoped<IValidator<SystemReportRequest>, SystemReportRequestValidator >();
 builder.Services.AddScoped<IValidator<UserReportRequest>,UserReportRequestValidator >();
 builder.Services.AddScoped<IValidator<CreatePlaceRequest>, CreatePlaceRequestValidator>();
+builder.Services.AddScoped<IValidator<UpdatePlaceRequest>, UpdatePlaceRequestValidator>();
 
 
 //Database connection

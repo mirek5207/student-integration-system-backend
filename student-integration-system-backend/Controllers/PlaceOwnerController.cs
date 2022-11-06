@@ -45,11 +45,37 @@ public class PlaceOwnerController : ControllerBase
         return Ok(response);
     }
     
+    /// <summary>
+    /// Delete place by id. Available for: PlaceOwner
+    /// </summary>
     [HttpDelete("deletePlace/{placeId:int}")]
+    [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult DeletePlace(int placeId)
     {
         _placeService.DeletePlace(placeId);
         return NoContent();
+    }
+    
+    /// <summary>
+    /// Update place by id. Available for: PlaceOwner
+    /// </summary>
+    [HttpPatch("updatePlace/{placeId:int}")]
+    [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Place> UpdatePlace(int placeId, UpdatePlaceRequest request)
+    {
+        var response = _placeService.UpdatePlace(placeId, request);
+        return Ok(response);
+    }
+    
+    /// <summary>
+    /// Get all places by userId. Available for: PlaceOwner
+    /// </summary>
+    [HttpGet("getPlaces/{userId:int}")]
+    [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<List<Place>> GetAllPlacesOwnedByPlaceOwner(int userId)
+    {
+        var response = _placeService.GetAllPlacesOwnedByPlaceOwner(userId);
+        return Ok(response);
     }
     
 }
