@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using student_integration_system_backend.Entities;
+using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Models.Seeds;
@@ -43,4 +44,12 @@ public class PlaceOwnerController : ControllerBase
         var response = _placeService.CreatePlace(request);
         return Ok(response);
     }
+    
+    [HttpDelete("deletePlace/{placeId:int}")]
+    public ActionResult DeletePlace(int placeId)
+    {
+        _placeService.DeletePlace(placeId);
+        return NoContent();
+    }
+    
 }

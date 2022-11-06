@@ -1,4 +1,5 @@
 ﻿using student_integration_system_backend.Entities;
+using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Services.PlaceOwnerService;
 
@@ -28,6 +29,20 @@ public class PlaceServiceImpl : IPlaceService
         };
         _dbContext.Places.Add(place);
         _dbContext.SaveChanges();
+        return place;
+    }
+
+    public void DeletePlace(int placeId)
+    {
+        var place = GetPlaceById(placeId);
+        _dbContext.Places.Remove(place);
+        _dbContext.SaveChanges();
+    }
+
+    public Place GetPlaceById(int placeId)
+    {
+        var place = _dbContext.Places.FirstOrDefault(place => place.Id == placeId);
+        if (place == null) throw new NotFoundException("Place not found");
         return place;
     }
 }
