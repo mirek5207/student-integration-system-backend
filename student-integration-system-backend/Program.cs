@@ -18,6 +18,7 @@ using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.ClientService;
 using student_integration_system_backend.Services.ModeratorService;
 using student_integration_system_backend.Services.PlaceOwnerService;
+using student_integration_system_backend.Services.PlaceService;
 using student_integration_system_backend.Services.Reports;
 using student_integration_system_backend.Services.RoleService;
 using student_integration_system_backend.Services.UserRoleService;
@@ -81,6 +82,7 @@ builder.Services.AddScoped<IPlaceOwnerService, PlaceOwnerServiceImpl>();
 builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 builder.Services.AddScoped<IRoleService, RoleServiceImpl>();
 builder.Services.AddScoped<IReportService, ReportServiceImpl>();
+builder.Services.AddScoped<IPlaceService, PlaceServiceImpl>();
 
 //Fluent validation
 builder.Services.AddFluentValidation();
@@ -92,6 +94,7 @@ builder.Services.AddScoped<IValidator<SignInRequest>, SignInRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateModeratorRequest>, UpdateModeratorRequestValidator>();
 builder.Services.AddScoped<IValidator<SystemReportRequest>, SystemReportRequestValidator >();
 builder.Services.AddScoped<IValidator<UserReportRequest>,UserReportRequestValidator >();
+builder.Services.AddScoped<IValidator<CreatePlaceRequest>, CreatePlaceRequestValidator>();
 
 
 //Database connection
