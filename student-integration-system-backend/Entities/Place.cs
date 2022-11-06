@@ -8,6 +8,8 @@ public class Place
     public string Name { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+    public int NumberOfReservedSeats { get; set; }
+    public int MaxSeatsAvailableForReservation { get; set; }
     public int PlaceOwnerId { get; set; }
     public virtual PlaceOwner PlaceOwner { get; set; }
 }
