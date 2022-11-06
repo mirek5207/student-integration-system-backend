@@ -6,6 +6,7 @@ using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.RoleService;
+using student_integration_system_backend.Services.UserRoleService;
 using student_integration_system_backend.Services.UserService;
 
 namespace student_integration_system_backend.Services.PlaceOwnerService;
@@ -16,6 +17,7 @@ public class PlaceOwnerServiceImpl : IPlaceOwnerService
     private readonly IUserService _userService;
     private readonly IAuthService _authService;
     private readonly IRoleService _roleService;
+    
     public PlaceOwnerServiceImpl(AppDbContext dbContext, IUserService userService, IAuthService authService, IRoleService roleService)
     {
         _dbContext = dbContext;
@@ -32,6 +34,12 @@ public class PlaceOwnerServiceImpl : IPlaceOwnerService
         return _authService.GenerateJwtToken(user);
     }
 
+    public PlaceOwner GetPlaceOwnerByUserId(int userId)
+    {
+        var placeOwner = _dbContext.PlacesOwners.FirstOrDefault(owner => owner.UserId == userId);
+        if (placeOwner == null) throw new NotFoundException("Place owner not found");
+        return placeOwner;
+    }
     private PlaceOwner CreatePlaceOwner(User user, string firstName, string surName)
     {
         var placeOwner = new PlaceOwner

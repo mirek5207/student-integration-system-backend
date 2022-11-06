@@ -7,4 +7,5 @@ namespace student_integration_system_backend.Services.PlaceOwnerService;
 public interface IPlaceOwnerService
 {
     AuthenticationResponse RegisterPlaceOwner(PlaceOwnerSignUpRequest request);
+    PlaceOwner GetPlaceOwnerByUserId(int placeOwnerId);
 }
