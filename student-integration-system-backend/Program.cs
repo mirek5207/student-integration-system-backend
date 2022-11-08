@@ -92,6 +92,7 @@ builder.Services.AddScoped<IValidator<ModeratorSignUpRequest>, ModeratorSignUpRe
 builder.Services.AddScoped<IValidator<PlaceOwnerSignUpRequest>, PlaceOwnerSignUpRequestValidator>();
 builder.Services.AddScoped<IValidator<SignInRequest>, SignInRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateModeratorRequest>, UpdateModeratorRequestValidator>();
+builder.Services.AddScoped<IValidator<UpdateClientRequest>, UpdateClientRequestValidator>();
 builder.Services.AddScoped<IValidator<SystemReportRequest>, SystemReportRequestValidator >();
 builder.Services.AddScoped<IValidator<UserReportRequest>,UserReportRequestValidator >();
 builder.Services.AddScoped<IValidator<CreatePlaceRequest>, CreatePlaceRequestValidator>();
