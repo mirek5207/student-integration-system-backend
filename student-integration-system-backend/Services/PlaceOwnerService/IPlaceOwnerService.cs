@@ -8,4 +8,5 @@ public interface IPlaceOwnerService
 {
     AuthenticationResponse RegisterPlaceOwner(PlaceOwnerSignUpRequest request);
     PlaceOwner GetPlaceOwnerByUserId(int placeOwnerId);
+    IEnumerable<PlaceOwner> GetAllPlaceOwners();
 }

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using student_integration_system_backend.Entities;
 using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
@@ -40,6 +41,13 @@ public class PlaceOwnerServiceImpl : IPlaceOwnerService
         if (placeOwner == null) throw new NotFoundException("Place owner not found");
         return placeOwner;
     }
+
+    public IEnumerable<PlaceOwner> GetAllPlaceOwners()
+    {
+        var placeOwners = _dbContext.PlacesOwners.Include(owner => owner.User.Account).ToList();
+        return placeOwners;
+    }
+
     private PlaceOwner CreatePlaceOwner(User user, string firstName, string surName)
     {
         var placeOwner = new PlaceOwner
