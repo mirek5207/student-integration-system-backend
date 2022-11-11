@@ -41,7 +41,7 @@ public class ModeratorController : ControllerBase
     /// <summary>
     /// Update status of user report(Unverified,InProgress,Verified). Available for: Moderator
     /// </summary>
-    [HttpPatch("updateStatusOfUserReport")]
+    [HttpPatch("updateStatusOfUserReport/{reportId:int}/{reportStatus}")]
     [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Report> UpdateStatusOfUserReport(int reportId, ReportStatus reportStatus)
     {
@@ -51,7 +51,7 @@ public class ModeratorController : ControllerBase
     /// <summary>
     /// Update status of user account.(IsActive: true,false) Available for: Moderator
     /// </summary>
-    [HttpPatch("UpdateStatusOfUserAccount")]
+    [HttpPatch("UpdateStatusOfUserAccount/{userId:int}/{isActive}")]
     [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Account> UpdateStatusOfUserAccount(int userId, bool isActive)
     {

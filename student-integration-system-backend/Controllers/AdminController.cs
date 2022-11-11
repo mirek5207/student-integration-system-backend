@@ -36,7 +36,7 @@ public class AdminController : ControllerBase
     /// <summary>
     /// Update moderator data
     /// </summary>
-    [HttpPatch("updateModeratorAccount")]
+    [HttpPatch("updateModeratorAccount/{moderatorId:int}")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Moderator> UpdateModerator(UpdateModeratorRequest request, int moderatorId)
     {
@@ -80,7 +80,7 @@ public class AdminController : ControllerBase
     /// <summary>
     /// Update status of system report(Unverified,InProgress,Verified)
     /// </summary>
-    [HttpPatch("updateStatusOfSystemReport")]
+    [HttpPatch("updateStatusOfSystemReport/{reportId:int}/{reportStatus}")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Report> UpdateStatusOfSystemReport(int reportId, ReportStatus reportStatus)
     {

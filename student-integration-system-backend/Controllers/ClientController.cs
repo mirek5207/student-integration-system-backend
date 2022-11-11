@@ -37,7 +37,7 @@ public class ClientController : ControllerBase
     ///<summary>
     /// Get client data
     /// </summary>
-    [HttpGet("getClientData{clientId:int}")]
+    [HttpGet("getClientData/{clientId:int}")]
     public ActionResult<Client> GetClient(int clientId)
     {
         var client = _clientService.GetClientById(clientId);
@@ -47,7 +47,7 @@ public class ClientController : ControllerBase
     /// <summary>
     /// Update client data
     /// </summary>
-    [HttpPatch("updateClientAccount")]
+    [HttpPatch("updateClientAccount/{clientId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Client> UpdateClient(UpdateClientRequest request, int clientId)
     {
