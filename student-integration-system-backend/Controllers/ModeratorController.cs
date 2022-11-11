@@ -70,4 +70,15 @@ public class ModeratorController : ControllerBase
         return Ok(response);
     }
     
+    /// <summary>
+    /// Get all place owner. Available for: Moderator
+    /// </summary>
+    [HttpGet("getAllPlaceOwner")]
+    [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<List<PlaceOwner>> GetAllPlaceOwners()
+    {
+        var response = _placeOwnerService.GetAllPlaceOwners();
+        return Ok(response);
+    }
+    
 }
