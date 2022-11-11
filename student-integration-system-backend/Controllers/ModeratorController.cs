@@ -48,17 +48,7 @@ public class ModeratorController : ControllerBase
         var response = _reportService.UpdateStatusOfReport(reportId, reportStatus);
         return response;
     }
-    /// <summary>
-    /// Deactivate user account. Available for: Moderator
-    /// </summary>
-    [HttpPatch("DeactivateUserAccount")]
-    [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Account> DeactivateUserAccount(int userId)
-    {
-        var response = _accountService.DeactivateAccount(userId);
-        return Ok(response);
-    }
-    
+
     /// <summary>
     /// Get all clients. Available for: Moderator
     /// </summary>
