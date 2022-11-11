@@ -32,10 +32,10 @@ public class AccountServiceImpl : IAccountService
         return account;
     }
 
-    public Account DeactivateAccount(int userId)
+    public Account UpdateStatusOfUserAccount(int userId, bool isActive)
     {
         var account = GetAccountByUserId(userId);
-        account.IsActive = false;
+        account.IsActive = isActive;
         _dbContext.SaveChanges();
         return account;
     }

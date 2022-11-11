@@ -48,7 +48,17 @@ public class ModeratorController : ControllerBase
         var response = _reportService.UpdateStatusOfReport(reportId, reportStatus);
         return response;
     }
-
+    /// <summary>
+    /// Update status of user account.(IsActive: true,false) Available for: Moderator
+    /// </summary>
+    [HttpPatch("UpdateStatusOfUserAccount")]
+    [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Account> UpdateStatusOfUserAccount(int userId, bool isActive)
+    {
+        var response = _accountService.UpdateStatusOfUserAccount(userId, isActive);
+        return Ok(response);
+    }
+    
     /// <summary>
     /// Get all clients. Available for: Moderator
     /// </summary>
