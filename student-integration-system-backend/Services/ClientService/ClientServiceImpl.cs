@@ -69,4 +69,11 @@ public class ClientServiceImpl : IClientService
         if (client == null) throw new NotFoundException("Client not found");
         return client;
     }
+
+    public IEnumerable<Client> GetAllClients()
+    {
+        var clients = _dbContext.Clients.Include(client => client.User.Account).ToList();
+        if (clients == null) throw new NotFoundException("Clients not found");
+        return clients;
+    }
 }

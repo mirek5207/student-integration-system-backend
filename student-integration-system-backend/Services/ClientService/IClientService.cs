@@ -9,4 +9,5 @@ public interface IClientService
     AuthenticationResponse RegisterClient(ClientSignUpRequest request);
     Client UpdateClient(UpdateClientRequest request, int clientId);
     Client GetClientById(int clientId);
+    IEnumerable<Client> GetAllClients();
 }
