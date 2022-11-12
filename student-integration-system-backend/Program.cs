@@ -16,6 +16,7 @@ using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.ClientService;
+using student_integration_system_backend.Services.CustomPlaceService;
 using student_integration_system_backend.Services.ModeratorService;
 using student_integration_system_backend.Services.PlaceOwnerService;
 using student_integration_system_backend.Services.PlaceService;
@@ -59,6 +60,7 @@ builder.Services.AddSwaggerGen(options =>
         throw new InvalidOperationException("Unable to determine tag for endpoint.");
     });
     options.DocInclusionPredicate((_, _) => true);
+    options.EnableAnnotations();
 });
 
 // Exception handling
@@ -83,6 +85,7 @@ builder.Services.AddScoped<IAuthService, AuthServiceImpl>();
 builder.Services.AddScoped<IRoleService, RoleServiceImpl>();
 builder.Services.AddScoped<IReportService, ReportServiceImpl>();
 builder.Services.AddScoped<IPlaceService, PlaceServiceImpl>();
+builder.Services.AddScoped<ICustomPlaceService, CustomPlaceServiceImpl>();
 
 //Fluent validation
 builder.Services.AddFluentValidation();
@@ -98,6 +101,7 @@ builder.Services.AddScoped<IValidator<UserReportRequest>,UserReportRequestValida
 builder.Services.AddScoped<IValidator<CreatePlaceRequest>, CreatePlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdatePlaceRequest>, UpdatePlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateStatusOfReportRequest>, UpdateStatusOfReportRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateCustomPlaceRequest>, CreateCustomPlaceRequestValidator>();
 
 
 //Database connection
