@@ -24,7 +24,7 @@ public class AdminController : ControllerBase
     }
     
     /// <summary>
-    /// Creates new moderator
+    /// Creates new moderator. Available for: Admin
     /// </summary>
     [HttpPost("createModeratorAccount")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -34,7 +34,7 @@ public class AdminController : ControllerBase
         return Ok(response);
     }
     /// <summary>
-    /// Update moderator data
+    /// Update moderator data. Available for: Admin
     /// </summary>
     [HttpPatch("updateModeratorAccount/{moderatorId:int}")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -45,7 +45,7 @@ public class AdminController : ControllerBase
     }
     
     /// <summary>
-    /// Get moderator by id
+    /// Get moderator by id. Available for: Admin
     /// </summary>
     [HttpGet("getModerator/{moderatorId:int}")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -56,7 +56,7 @@ public class AdminController : ControllerBase
     }
     
     /// <summary>
-    /// Get all moderators
+    /// Get all moderators. Available for: Admin
     /// </summary>
     [HttpGet("getModerators")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -67,7 +67,7 @@ public class AdminController : ControllerBase
     }
 
     /// <summary>
-    /// Get all system reports
+    /// Get all system reports. Available for: Admin
     /// </summary>
     [HttpGet("getSystemReports")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -78,7 +78,7 @@ public class AdminController : ControllerBase
     }
 
     /// <summary>
-    /// Update status of system report(Unverified,InProgress,Verified)
+    /// Update status of system report(Unverified,InProgress,Verified). Available for: Admin
     /// </summary>
     [HttpPatch("updateStatusOfSystemReport/{reportId:int}")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
