@@ -36,7 +36,17 @@ public class CustomPlaceServiceImpl : ICustomPlaceService
         _dbContext.CustomPlaces.Remove(customPlace);
         _dbContext.SaveChanges();
     }
-
+    
+    public CustomPlace UpdateCustomPlace(int customPlaceId, UpdateCustomPlaceRequest request)
+    {
+        var customPlace = GetCustomPlaceById(customPlaceId);
+        customPlace.Latitude = request.Latitude;
+        customPlace.Longitude = request.Longitude;
+        customPlace.Description = request.Description;
+        _dbContext.SaveChanges();
+        return customPlace;
+    }
+    
     public CustomPlace GetCustomPlaceById(int customPlaceId)
     {
         var customPlace = _dbContext.CustomPlaces.FirstOrDefault(place => place.Id == customPlaceId);

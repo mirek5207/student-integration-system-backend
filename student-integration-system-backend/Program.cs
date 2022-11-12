@@ -102,6 +102,7 @@ builder.Services.AddScoped<IValidator<CreatePlaceRequest>, CreatePlaceRequestVal
 builder.Services.AddScoped<IValidator<UpdatePlaceRequest>, UpdatePlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateStatusOfReportRequest>, UpdateStatusOfReportRequestValidator>();
 builder.Services.AddScoped<IValidator<CreateCustomPlaceRequest>, CreateCustomPlaceRequestValidator>();
+builder.Services.AddScoped<IValidator<UpdateCustomPlaceRequest>, UpdateCustomPlaceRequestValidator>();
 
 
 //Database connection

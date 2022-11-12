@@ -86,4 +86,16 @@ public class ClientController : ControllerBase
         _placeService.DeleteCustomPlace(customPlaceId);
         return NoContent();
     }
+    
+    /// <summary>
+    /// Update custom place by client. Available for: Client
+    /// </summary>
+    [HttpPatch("updateCustomPlace/{customPlaceId:int}")]
+    [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<CustomPlace> UpdateCustomPlace(UpdateCustomPlaceRequest request, int customPlaceId)
+    {
+        var response = _placeService.UpdateCustomPlace(customPlaceId, request);
+        return response;
+    }
 }
