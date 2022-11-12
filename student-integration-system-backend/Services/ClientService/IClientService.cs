@@ -10,4 +10,5 @@ public interface IClientService
     Client UpdateClient(UpdateClientRequest request, int clientId);
     Client GetClientById(int clientId);
     IEnumerable<Client> GetAllClients();
+    Client GetClientByUserId(int userId);
 }
