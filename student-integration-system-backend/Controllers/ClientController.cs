@@ -61,12 +61,29 @@ public class ClientController : ControllerBase
     
     
     // --------------------------- Custom Places --------------------------- \\
-
+    
+    
+    /// <summary>
+    /// Create custom place by client. Available for: Client
+    /// </summary>
     [HttpPost("createCustomPlace")]
     [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<CustomPlace> CreateCustomPlace(CreateCustomPlaceRequest request)
     {
         var response = _placeService.CreateCustomPlace(request);
         return Ok(response);
+    }
+    
+    /// <summary>
+    /// Delete custom place by client. Available for: Client
+    /// </summary>
+    [HttpDelete("deleteCustomPlace/{customPlaceId:int}")]
+    [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult DeleteCustomPlace(int customPlaceId)
+    {
+        _placeService.DeleteCustomPlace(customPlaceId);
+        return NoContent();
     }
 }
