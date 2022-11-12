@@ -6,7 +6,9 @@ using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.ClientService;
+using student_integration_system_backend.Services.CustomPlaceService;
 using student_integration_system_backend.Services.UserService;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace student_integration_system_backend.Controllers;
 
@@ -16,11 +18,13 @@ public class ClientController : ControllerBase
 {
     private readonly IClientService _clientService;
     private readonly IUserService _userService;
+    private readonly ICustomPlaceService _placeService;
 
-    public ClientController(IClientService clientService, IUserService userService)
+    public ClientController(IClientService clientService, IUserService userService, ICustomPlaceService placeService)
     {
         _clientService = clientService;
         _userService = userService;
+        _placeService = placeService;
     }
 
 
@@ -52,6 +56,17 @@ public class ClientController : ControllerBase
     public ActionResult<Client> UpdateClient(UpdateClientRequest request, int clientId)
     {
         var response = _clientService.UpdateClient(request, clientId);
+        return Ok(response);
+    }
+    
+    
+    // --------------------------- Custom Places --------------------------- \\
+
+    [HttpPost("createCustomPlace")]
+    [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
+    public ActionResult<CustomPlace> CreateCustomPlace(CreateCustomPlaceRequest request)
+    {
+        var response = _placeService.CreateCustomPlace(request);
         return Ok(response);
     }
 }
