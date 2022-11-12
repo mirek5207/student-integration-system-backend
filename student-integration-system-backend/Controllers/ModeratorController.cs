@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using student_integration_system_backend.Entities;
+using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.ClientService;
@@ -41,21 +44,21 @@ public class ModeratorController : ControllerBase
     /// <summary>
     /// Update status of user report(Unverified,InProgress,Verified). Available for: Moderator
     /// </summary>
-    [HttpPatch("updateStatusOfUserReport/{reportId:int}/{reportStatus}")]
+    [HttpPatch("updateStatusOfUserReport/{reportId:int}")]
     [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Report> UpdateStatusOfUserReport(int reportId, ReportStatus reportStatus)
+    public ActionResult<Report> UpdateStatusOfUserReport(int reportId, UpdateStatusOfReportRequest request)
     {
-        var response = _reportService.UpdateStatusOfReport(reportId, reportStatus);
+        var response = _reportService.UpdateStatusOfReport(reportId, request._reportStatus);
         return response;
     }
     /// <summary>
     /// Update status of user account.(IsActive: true,false) Available for: Moderator
     /// </summary>
-    [HttpPatch("UpdateStatusOfUserAccount/{userId:int}/{isActive}")]
+    [HttpPatch("UpdateStatusOfUserAccount/{userId:int}")]
     [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Account> UpdateStatusOfUserAccount(int userId, bool isActive)
+    public ActionResult<Account> UpdateStatusOfUserAccount(int userId, UpdateStatusOfUserAccountRequest request)
     {
-        var response = _accountService.UpdateStatusOfUserAccount(userId, isActive);
+        var response = _accountService.UpdateStatusOfUserAccount(userId, request.isActive);
         return Ok(response);
     }
     

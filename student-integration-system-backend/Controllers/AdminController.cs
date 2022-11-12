@@ -80,11 +80,11 @@ public class AdminController : ControllerBase
     /// <summary>
     /// Update status of system report(Unverified,InProgress,Verified)
     /// </summary>
-    [HttpPatch("updateStatusOfSystemReport/{reportId:int}/{reportStatus}")]
+    [HttpPatch("updateStatusOfSystemReport/{reportId:int}")]
     [Authorize(Roles = RoleType.Admin, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Report> UpdateStatusOfSystemReport(int reportId, ReportStatus reportStatus)
+    public ActionResult<Report> UpdateStatusOfSystemReport(int reportId, UpdateStatusOfReportRequest updateStatusOfReportRequest)
     {
-        var response = _reportService.UpdateStatusOfReport(reportId, reportStatus);
+        var response = _reportService.UpdateStatusOfReport(reportId, updateStatusOfReportRequest._reportStatus);
         return response;
     }
 }
