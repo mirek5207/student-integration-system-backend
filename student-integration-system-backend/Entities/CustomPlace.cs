@@ -3,7 +3,8 @@
 public class CustomPlace
 {
     public int Id { get; set; }
-    public string Location { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
     public string? Description { get; set; }
     public int ClientId { get; set; }
     public virtual Client Client { get; set; }
