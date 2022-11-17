@@ -10,8 +10,8 @@ public class Lobby
     public int? CustomPlaceId { get; set; }
     public int LobbyOwnerId { get; set; }
     public virtual LobbyOwner LobbyOwner { get; set; }
-    public virtual Place Place { get; set; }
-    public virtual CustomPlace CustomPlace { get; set; }
+    public virtual Place? Place { get; set; }
+    public virtual CustomPlace? CustomPlace { get; set; }
     public virtual List<LobbyGuest> LobbyGuests { get; set; }
 }
 
