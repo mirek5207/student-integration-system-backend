@@ -31,10 +31,10 @@ public class LobbyGuestServiceImpl : ILobbyGuestService
         return lobbyGuest;
     }
 
-    public LobbyGuest? GetLobbyGuestByUserId(int userId)
+    public LobbyGuest? GetLobbyGuestByUserIdForSpecificLobby(int userId, int lobbyId)
     {
         var lobbyGuest = _dbContext.LobbyGuests.Include(lg => lg.Client)
-            .FirstOrDefault(lg => lg.Client.UserId == userId);
+            .FirstOrDefault(lg => lg.Client.UserId == userId && lg.LobbyId == lobbyId);
         return lobbyGuest;
     }
 }
