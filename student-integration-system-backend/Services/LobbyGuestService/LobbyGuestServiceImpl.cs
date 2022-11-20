@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using student_integration_system_backend.Entities;
+using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Services.ClientService;
 using student_integration_system_backend.Services.LobbyService;
 
@@ -9,21 +10,28 @@ public class LobbyGuestServiceImpl : ILobbyGuestService
 {
     private readonly AppDbContext _dbContext;
     private readonly IClientService _clientService;
-    private readonly ILobbyService _lobbyService;
+
     
-    public LobbyGuestServiceImpl(AppDbContext dbContext, IClientService clientService, ILobbyService lobbyService)
+    public LobbyGuestServiceImpl(AppDbContext dbContext, IClientService clientService)
     {
         _dbContext = dbContext;
         _clientService = clientService;
-        _lobbyService = lobbyService;
     }
     
     public LobbyGuest CreateLobbyGuest(int userId, int lobbyId)
     {
+        var lobby = _dbContext.Lobbies
+            .Include(l=>l.CustomPlace)
+            .Include(l=>l.LobbyGuests)
+            .Include(l=>l.Place)
+            .Include(l=>l.LobbyOwner).ThenInclude(lo => lo.Client).IgnoreAutoIncludes()
+            .FirstOrDefault(l => l.Id == lobbyId);
+        if (lobby is null) throw new NotFoundException("Lobby not found");
+        
         var lobbyGuest = new LobbyGuest()
         {
             Client = _clientService.GetClientByUserId(userId),
-            Lobby = _lobbyService.GetLobbyById(lobbyId),
+            Lobby = lobby,
             Status = LobbyGuestStatus.Sent
         };
         _dbContext.LobbyGuests.Add(lobbyGuest);
