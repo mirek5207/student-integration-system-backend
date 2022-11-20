@@ -7,8 +7,8 @@ namespace student_integration_system_backend.Services.ClientService;
 public interface IClientService
 {
     AuthenticationResponse RegisterClient(ClientSignUpRequest request);
-    Client UpdateClient(UpdateClientRequest request, int clientId);
-    Client GetClientById(int clientId);
+    Client UpdateClient(UpdateClientRequest request, int userId);
+    Client GetClientById(int userId);
     IEnumerable<Client> GetAllClients();
     Client GetClientByUserId(int userId);
 }

@@ -41,21 +41,21 @@ public class ClientController : ControllerBase
     ///<summary>
     /// Get client data
     /// </summary>
-    [HttpGet("getClientData/{clientId:int}")]
-    public ActionResult<Client> GetClient(int clientId)
+    [HttpGet("getClientData/{userId:int}")]
+    public ActionResult<Client> GetClient(int userId)
     {
-        var client = _clientService.GetClientById(clientId);
+        var client = _clientService.GetClientById(userId);
         return Ok(client);
     }
 
     /// <summary>
     /// Update client data
     /// </summary>
-    [HttpPatch("updateClientAccount/{clientId:int}")]
+    [HttpPatch("updateClientAccount/{userId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Client> UpdateClient(UpdateClientRequest request, int clientId)
+    public ActionResult<Client> UpdateClient(UpdateClientRequest request, int userId)
     {
-        var response = _clientService.UpdateClient(request, clientId);
+        var response = _clientService.UpdateClient(request, userId);
         return Ok(response);
     }
     

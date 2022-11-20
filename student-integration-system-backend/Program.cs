@@ -17,6 +17,9 @@ using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.ClientService;
 using student_integration_system_backend.Services.CustomPlaceService;
+using student_integration_system_backend.Services.LobbyGuestService;
+using student_integration_system_backend.Services.LobbyOwnerService;
+using student_integration_system_backend.Services.LobbyService;
 using student_integration_system_backend.Services.ModeratorService;
 using student_integration_system_backend.Services.PlaceOwnerService;
 using student_integration_system_backend.Services.PlaceService;
@@ -86,6 +89,9 @@ builder.Services.AddScoped<IRoleService, RoleServiceImpl>();
 builder.Services.AddScoped<IReportService, ReportServiceImpl>();
 builder.Services.AddScoped<IPlaceService, PlaceServiceImpl>();
 builder.Services.AddScoped<ICustomPlaceService, CustomPlaceServiceImpl>();
+builder.Services.AddScoped<ILobbyService, LobbyServiceImpl>();
+builder.Services.AddScoped<ILobbyOwnerService, LobbyOwnerServiceImpl>();
+builder.Services.AddScoped<ILobbyGuestService, LobbyGuestServiceImpl>();
 
 //Fluent validation
 builder.Services.AddFluentValidation();
@@ -103,6 +109,7 @@ builder.Services.AddScoped<IValidator<UpdatePlaceRequest>, UpdatePlaceRequestVal
 builder.Services.AddScoped<IValidator<UpdateStatusOfReportRequest>, UpdateStatusOfReportRequestValidator>();
 builder.Services.AddScoped<IValidator<CreateCustomPlaceRequest>, CreateCustomPlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateCustomPlaceRequest>, UpdateCustomPlaceRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateLobbyRequest>, CreateLobbyRequestValidator>();
 
 
 //Database connection

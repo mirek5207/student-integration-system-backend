@@ -18,14 +18,16 @@ public class ClientServiceImpl : IClientService
     private readonly AppDbContext _dbContext;
     private readonly IAuthService _authService;
     private readonly IRoleService _roleService;
+    private readonly IAccountService _accountService;
 
-    public ClientServiceImpl(IUserService userService, AppDbContext dbContext, IAuthService authService, IRoleService roleService)
+    public ClientServiceImpl(IUserService userService, AppDbContext dbContext, IAuthService authService,
+        IRoleService roleService, IAccountService accountService)
     {
         _userService = userService;
         _dbContext = dbContext;
         _authService = authService;
         _roleService = roleService;
-
+        _accountService = accountService;
     }
 
     public AuthenticationResponse RegisterClient(ClientSignUpRequest request)
@@ -36,15 +38,16 @@ public class ClientServiceImpl : IClientService
         return _authService.GenerateJwtToken(user);
     }
 
-    public Client UpdateClient(UpdateClientRequest request, int clientId)
+    public Client UpdateClient(UpdateClientRequest request, int userId)
     {
-        var client = GetClientById(clientId);
+        var client = GetClientById(userId);
 
         client.FirstName = request.FirstName;
         client.SurName = request.SurName;
         client.User.Email = _userService.CheckIfEmailIsUnique(client.User.Id,request.Email) ? request.Email : throw new BadRequestException("Email already exist");
         client.User.Login = _userService.CheckIfLoginIsUnique(client.User.Id,request.Login) ? request.Login : throw new BadRequestException("Login already exist");
         client.User.HashedPassword = BCrypt.Net.BCrypt.HashPassword(request.HashedPassword);
+        _accountService.UpdateStatusOfUserAccount(userId, request.IsActive);
         _dbContext.SaveChanges();
         
         return client;
@@ -63,9 +66,9 @@ public class ClientServiceImpl : IClientService
         return client;
     }
     
-    public Client GetClientById(int clientId)
+    public Client GetClientById(int userId)
     {
-        var client = _dbContext.Clients.Include(client => client.User).FirstOrDefault(client => client.Id == clientId);
+        var client = _dbContext.Clients.Include(client => client.User).FirstOrDefault(client => client.User.Id == userId);
         if (client == null) throw new NotFoundException("Client not found");
         return client;
     }
