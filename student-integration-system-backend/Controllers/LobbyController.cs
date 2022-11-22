@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
+using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.LobbyService;
 
 namespace student_integration_system_backend.Controllers;
@@ -20,6 +23,7 @@ public class LobbyController : ControllerBase
     /// Returns lobby by Id
     /// </summary>
     [HttpGet("getLobby{lobbyId:int}")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Lobby> GetLobbyById(int lobbyId)
     {
         var lobby = _lobbyService.GetLobbyById(lobbyId);
@@ -30,6 +34,7 @@ public class LobbyController : ControllerBase
     /// Returns all lobbies
     /// </summary>
     [HttpGet("allLobbies")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<IEnumerable<Lobby>> GetAllLobbies()
     {
         var lobbies = _lobbyService.GetAllLobbies();
@@ -40,6 +45,7 @@ public class LobbyController : ControllerBase
     /// Returns all lobbies which belongs to specific lobby owner
     /// </summary>
     [HttpGet("allOwnerLobbies")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<IEnumerable<Lobby>> GetAllOwnerLobbies(int userId)
     {
         var lobbies = _lobbyService.GetAllClientLobbies(userId);
@@ -50,6 +56,7 @@ public class LobbyController : ControllerBase
     /// Returns all public lobbies
     /// </summary>
     [HttpGet("allPublicLobbies")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<IEnumerable<Lobby>> GetAllPubicLobbies()
     {
         var lobbies = _lobbyService.GetAllPublicLobbies();
@@ -60,6 +67,7 @@ public class LobbyController : ControllerBase
     /// Returns all lobbies where user is as guest
     /// </summary>
     [HttpGet("allGuestLobbies")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<IEnumerable<Lobby>> GetAllGuestLobbies(int userId)
     {
         var lobbies = _lobbyService.GetAllLobbiesWhereClientIsGuest(userId);
@@ -70,6 +78,7 @@ public class LobbyController : ControllerBase
     /// Returns all lobby invites
     /// </summary>
     [HttpGet("allLobbyInvites")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<IEnumerable<Lobby>> GetAllLobbyInvites(int userId)
     {
         var lobbies = _lobbyService.GetAllLobbiesWhereClientIsInvited(userId);
@@ -80,6 +89,7 @@ public class LobbyController : ControllerBase
     /// Creates new lobby
     /// </summary>
     [HttpPost("createLobby")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Lobby> CreateLobby(CreateLobbyRequest request, int userId)
     {
         var lobby = _lobbyService.CreateLobby(request, userId);
@@ -90,6 +100,7 @@ public class LobbyController : ControllerBase
     /// Adds guest to lobby
     /// </summary>
     [HttpPut("joinLobby{userId:int}")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<string> AddGuestToLobby(int userId, int lobbyId)
     {
         var message = _lobbyService.AddGuestToLobby(userId, lobbyId);
@@ -100,6 +111,7 @@ public class LobbyController : ControllerBase
     /// Adds guest to lobby
     /// </summary>
     [HttpPost("inviteGuest")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<string> InviteGuestToLobby(int userId, int lobbyId)
     {
         var message = _lobbyService.InviteGuestToLobby(userId, lobbyId);
@@ -110,6 +122,7 @@ public class LobbyController : ControllerBase
     /// Removes guest from lobbyGuests array
     /// </summary>
     [HttpDelete("leaveLobby")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<string> RejectInviteOrLeaveLobby(int userId, int lobbyId)
     {
         var message = _lobbyService.RejectInviteOrLeaveLobby(userId, lobbyId);
@@ -120,6 +133,7 @@ public class LobbyController : ControllerBase
     /// Accepts invite to the lobby
     /// </summary>
     [HttpPut("acceptInvite")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<string> AccpetInviteToLobby(int userId, int lobbyId)
     {
         var message = _lobbyService.AcceptInviteToLobby(userId, lobbyId);

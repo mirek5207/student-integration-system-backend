@@ -166,5 +166,11 @@ public class LobbyServiceImpl : ILobbyService
         if (lobbies is null) throw new NotFoundException("Lobbies not found");
         return lobbies;
     }
-    
+
+    public IEnumerable<LobbyGuest> GetAllLobbyGuestsForLobby(int lobbyId)
+    {
+        var lobbyGuests = _dbContext.LobbyGuests.Include(lg => lg.Client)
+            .Where(lg => lg.LobbyId == lobbyId);
+        return lobbyGuests;
+    }
 }
