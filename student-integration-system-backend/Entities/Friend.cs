@@ -9,7 +9,7 @@ public class Friend
     public int FriendTwoId { get; set; }
     public FriendStatus Status { get; set; }
     [ForeignKey("FriendOneId")]
-    public virtual Client FriendOn { get; set; }
+    public virtual Client FriendOne { get; set; }
     [ForeignKey("FriendTwoId")]
     public virtual Client FriendTwo { get; set; }
 }
