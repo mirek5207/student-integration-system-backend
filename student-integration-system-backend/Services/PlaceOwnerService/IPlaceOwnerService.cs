@@ -7,6 +7,7 @@ namespace student_integration_system_backend.Services.PlaceOwnerService;
 public interface IPlaceOwnerService
 {
     AuthenticationResponse RegisterPlaceOwner(PlaceOwnerSignUpRequest request);
-    PlaceOwner GetPlaceOwnerByUserId(int placeOwnerId);
+    PlaceOwner GetPlaceOwnerByUserId(int userId);
+    PlaceOwner UpdatePlaceOwnerByUserId(UpdatePlaceOwnerRequest request, int userId);
     IEnumerable<PlaceOwner> GetAllPlaceOwners();
 }

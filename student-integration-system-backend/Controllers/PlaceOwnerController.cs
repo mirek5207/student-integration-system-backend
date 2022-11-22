@@ -34,6 +34,29 @@ public class PlaceOwnerController : ControllerBase
         var response =  _placeOwnerService.RegisterPlaceOwner(request);
         return Ok(response);
     }
+    
+    ///<summary>
+    /// Get place owner data
+    /// </summary>
+    [HttpGet("getPlaceOwnerData/{userId:int}")]
+    [Authorize(Roles = RoleType.Moderator + "," + RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Client> GetPlaceOwner(int userId)
+    {
+        var placeOwner = _placeOwnerService.GetPlaceOwnerByUserId(userId);
+        return Ok(placeOwner);
+    }
+
+    /// <summary>
+    /// Update place owner data
+    /// </summary>
+    [HttpPatch("updatePlaceOwnerAccount/{userId:int}")]
+    [Authorize(Roles = RoleType.Moderator + "," + RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Client> UpdateClient(UpdatePlaceOwnerRequest request, int userId)
+    {
+        var placeOwner = _placeOwnerService.UpdatePlaceOwnerByUserId(request, userId);
+        return Ok(placeOwner);
+    }
+    
     /// <summary>
     /// Create new place. Available for: PlaceOwner
     /// </summary>

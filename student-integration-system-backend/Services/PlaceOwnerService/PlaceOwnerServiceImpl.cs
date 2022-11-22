@@ -5,6 +5,7 @@ using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Models.Seeds;
+using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.RoleService;
 using student_integration_system_backend.Services.UserRoleService;
@@ -18,13 +19,16 @@ public class PlaceOwnerServiceImpl : IPlaceOwnerService
     private readonly IUserService _userService;
     private readonly IAuthService _authService;
     private readonly IRoleService _roleService;
+    private readonly IAccountService _accountService;
     
-    public PlaceOwnerServiceImpl(AppDbContext dbContext, IUserService userService, IAuthService authService, IRoleService roleService)
+    public PlaceOwnerServiceImpl(AppDbContext dbContext, IUserService userService, IAuthService authService,
+        IRoleService roleService, IAccountService accountService)
     {
         _dbContext = dbContext;
         _userService = userService;
         _authService = authService;
         _roleService = roleService;
+        _accountService = accountService;
     }
 
     public AuthenticationResponse RegisterPlaceOwner(PlaceOwnerSignUpRequest request)
@@ -37,8 +41,24 @@ public class PlaceOwnerServiceImpl : IPlaceOwnerService
 
     public PlaceOwner GetPlaceOwnerByUserId(int userId)
     {
-        var placeOwner = _dbContext.PlacesOwners.FirstOrDefault(owner => owner.UserId == userId);
+        var placeOwner = _dbContext.PlacesOwners.Include(owner => owner.User.Account)
+            .FirstOrDefault(owner => owner.UserId == userId);
         if (placeOwner == null) throw new NotFoundException("Place owner not found");
+        return placeOwner;
+    }
+
+    public PlaceOwner UpdatePlaceOwnerByUserId(UpdatePlaceOwnerRequest request, int userId)
+    {
+        var placeOwner = GetPlaceOwnerByUserId(userId);
+
+        placeOwner.FirstName = request.FirstName;
+        placeOwner.SurName = request.SurName;
+        placeOwner.User.Email = _userService.CheckIfEmailIsUnique(placeOwner.User.Id,request.Email) ? request.Email : throw new BadRequestException("Email already exist");
+        placeOwner.User.Login = _userService.CheckIfLoginIsUnique(placeOwner.User.Id,request.Login) ? request.Login : throw new BadRequestException("Login already exist");
+        placeOwner.User.HashedPassword = BCrypt.Net.BCrypt.HashPassword(request.HashedPassword);
+        _accountService.UpdateStatusOfUserAccount(userId, request.IsActive);
+        _dbContext.SaveChanges();
+        
         return placeOwner;
     }
 
