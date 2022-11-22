@@ -17,6 +17,7 @@ using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.ClientService;
 using student_integration_system_backend.Services.CustomPlaceService;
+using student_integration_system_backend.Services.FriendService;
 using student_integration_system_backend.Services.LobbyGuestService;
 using student_integration_system_backend.Services.LobbyOwnerService;
 using student_integration_system_backend.Services.LobbyService;
@@ -92,6 +93,7 @@ builder.Services.AddScoped<ICustomPlaceService, CustomPlaceServiceImpl>();
 builder.Services.AddScoped<ILobbyService, LobbyServiceImpl>();
 builder.Services.AddScoped<ILobbyOwnerService, LobbyOwnerServiceImpl>();
 builder.Services.AddScoped<ILobbyGuestService, LobbyGuestServiceImpl>();
+builder.Services.AddScoped<IFriendService, FriendServiceImpl>();
 
 //Fluent validation
 builder.Services.AddFluentValidation();
