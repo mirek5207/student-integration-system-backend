@@ -68,7 +68,7 @@ public class ClientServiceImpl : IClientService
     
     public Client GetClientById(int userId)
     {
-        var client = _dbContext.Clients.Include(client => client.User).FirstOrDefault(client => client.User.Id == userId);
+        var client = _dbContext.Clients.Include(client => client.User.Account).FirstOrDefault(client => client.User.Id == userId);
         if (client == null) throw new NotFoundException("Client not found");
         return client;
     }
