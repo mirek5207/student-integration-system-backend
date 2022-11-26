@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
 using student_integration_system_backend.Entities;
-using student_integration_system_backend.Services.AccountService;
-using student_integration_system_backend.Services.UserRoleService;
+
 using student_integration_system_backend.Services.UserService;
 
 namespace student_integration_system_unit_test;
@@ -15,8 +9,6 @@ public class UserServiceTests
 {
     private readonly IUserService _userService;
     private readonly AppDbContext _dbContext;
-    private readonly Mock<IAccountService> _accountMock = new ();
-    private readonly Mock<IUserRoleService> _userRoleMock = new ();
 
     private User? _user;
     private const int UserId = 1;
@@ -33,7 +25,7 @@ public class UserServiceTests
     public UserServiceTests()
     {
         _dbContext = DataBaseSetup.SetUpDataBase();
-        _userService = new UserServiceImpl(_dbContext, _accountMock.Object, _userRoleMock.Object);
+        _userService = new UserServiceImpl(_dbContext);
     }
 
     
