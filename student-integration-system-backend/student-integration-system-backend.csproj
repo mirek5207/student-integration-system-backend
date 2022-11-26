@@ -24,12 +24,12 @@
         <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0-beta.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0-preview.7.22376.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.7.22376.2">
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0-preview.7" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.5" />
@@ -38,6 +38,10 @@
     <ItemGroup>
       <Compile Remove="Migrations\20221027212331_Initial.cs" />
       <Compile Remove="Migrations\20221027212331_Initial.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\Csv" />
     </ItemGroup>
 
 </Project>

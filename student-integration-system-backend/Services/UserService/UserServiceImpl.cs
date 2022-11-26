@@ -17,7 +17,7 @@ public class UserServiceImpl : IUserService
         _userRoleService = userRoleService;
     }
 
-    public User CreateUser(string login,string email,string password, Role role)
+    public User CreateUser(string login,string email,string password)
     {
         var user = new User
         {
@@ -28,8 +28,6 @@ public class UserServiceImpl : IUserService
         _dbContext.Users.Add(user); 
         _dbContext.SaveChanges();
         
-        _userRoleService.CreateUserRole(user, role);
-        _accountService.CreateAccount(user);
         return user;
 
     }
