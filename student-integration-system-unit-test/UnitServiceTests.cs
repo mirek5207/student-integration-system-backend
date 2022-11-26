@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -18,10 +19,16 @@ public class UserServiceTests
     private readonly Mock<IUserRoleService> _userRoleMock = new ();
 
     private User? _user;
+    private User? _user2;
     private const int UserId = 1;
     private const string Email = "example@gmail.com";
     private const string Password = "password";
     private const string Login = "login";
+    
+    private const int User2Id = 2;
+    private const string Email2 = "example2@gmail.com";
+    private const string Password2 = "password2";
+    private const string Login2 = "login2";
 
     public UserServiceTests()
     {
@@ -40,7 +47,16 @@ public class UserServiceTests
             HashedPassword = Password,
             Login = Login
         };
+        _user2 = new User
+        {
+            Id = User2Id,
+            Email = Email2,
+            HashedPassword = Password2,
+            Login = Login2
+        };
+        
         _dbContext.Users.Add(_user);
+        _dbContext.Users.Add(_user2);
         _dbContext.SaveChanges();
     }
 
@@ -48,7 +64,7 @@ public class UserServiceTests
     public void GetUserById_ShouldReturnUser_WhenUserExist()
     {
         //Act
-        var result = _userService?.GetUserById(UserId);
+        var result = _userService.GetUserById(UserId);
         //Assert
         Assert.AreEqual(_user,result);
     }
@@ -57,11 +73,29 @@ public class UserServiceTests
     public void GetUserByLogin_ShouldReturnUser_WhenUserExist()
     {
         //Act
-        var result = _userService?.GetUserByLogin(Login);
+        var result = _userService.GetUserByLogin(Login);
         //Assert
         Assert.AreEqual(_user,result);
     }
     
-    
+    [Test]
+    public void CheckIfEmailIsUnique_ShouldReturnTrue_WhenAnotherUserDoesNotHaveSuchAnEmail()
+    {
+        //arrange
+        const string email = "uniqueEmail@gmail.com";
+        //act
+        var result = _userService.CheckIfEmailIsUnique(UserId, email);
+        //Assert
+        Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void CheckIfEmailIsUnique_ShouldReturnFalse_WhenAnotherUserHasSuchAnEmail()
+    {
+        //act
+        var result = _userService.CheckIfEmailIsUnique(UserId, Email2);
+        //Assert
+        Assert.IsFalse(result);
+    }
    
 }
