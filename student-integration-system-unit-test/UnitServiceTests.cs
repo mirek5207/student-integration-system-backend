@@ -52,5 +52,16 @@ public class UserServiceTests
         //Assert
         Assert.AreEqual(_user,result);
     }
+
+    [Test]
+    public void GetUserByLogin_ShouldReturnUser_WhenUserExist()
+    {
+        //Act
+        var result = _userService?.GetUserByLogin(Login);
+        //Assert
+        Assert.AreEqual(_user,result);
+    }
     
+    
+   
 }
