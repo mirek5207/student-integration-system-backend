@@ -19,12 +19,12 @@ public class UserServiceTests
     private readonly Mock<IUserRoleService> _userRoleMock = new ();
 
     private User? _user;
-    private User? _user2;
     private const int UserId = 1;
     private const string Email = "example@gmail.com";
     private const string Password = "password";
     private const string Login = "login";
     
+    private User? _user2;
     private const int User2Id = 2;
     private const string Email2 = "example2@gmail.com";
     private const string Password2 = "password2";
@@ -97,5 +97,26 @@ public class UserServiceTests
         //Assert
         Assert.IsFalse(result);
     }
+    
+    [Test]
+    public void CheckIfLoginIsUnique_ShouldReturnTrue_WhenAnotherUserDoesNotHaveSuchAnLogin()
+    {
+        //arrange
+        const string login = "uniqueLogin";
+        //act
+        var result = _userService.CheckIfLoginIsUnique(UserId, login);
+        //Assert
+        Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void CheckIfLoginIsUnique_ShouldReturnFalse_WhenAnotherUserHasSuchAnLogin()
+    {
+        //act
+        var result = _userService.CheckIfLoginIsUnique(UserId, Login2);
+        //Assert
+        Assert.IsFalse(result);
+    }
    
+    
 }
