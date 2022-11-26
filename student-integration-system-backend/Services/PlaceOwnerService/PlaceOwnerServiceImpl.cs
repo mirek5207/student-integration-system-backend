@@ -20,21 +20,25 @@ public class PlaceOwnerServiceImpl : IPlaceOwnerService
     private readonly IAuthService _authService;
     private readonly IRoleService _roleService;
     private readonly IAccountService _accountService;
+    private readonly IUserRoleService _userRoleService;
     
     public PlaceOwnerServiceImpl(AppDbContext dbContext, IUserService userService, IAuthService authService,
-        IRoleService roleService, IAccountService accountService)
+        IRoleService roleService, IAccountService accountService, IUserRoleService userRoleService)
     {
         _dbContext = dbContext;
         _userService = userService;
         _authService = authService;
         _roleService = roleService;
         _accountService = accountService;
+        _userRoleService = userRoleService;
     }
 
     public AuthenticationResponse RegisterPlaceOwner(PlaceOwnerSignUpRequest request)
     {
         var role = _roleService.GetRoleById(RoleType.PlaceOwnerId);
-        var user = _userService.CreateUser(request.Login, request.Email, request.HashedPassword, role);
+        var user = _userService.CreateUser(request.Login, request.Email, request.HashedPassword);
+        _userRoleService.CreateUserRole(user, role);
+        _accountService.CreateAccount(user);
         CreatePlaceOwner(user,request.FirstName, request.SurName);
         return _authService.GenerateJwtToken(user);
     }
