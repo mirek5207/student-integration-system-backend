@@ -1,3 +1,5 @@
+using System;
+using System.Data.Common;
 using NUnit.Framework;
 using student_integration_system_backend.Entities;
 
@@ -109,6 +111,31 @@ public class UserServiceTests
         //Assert
         Assert.IsFalse(result);
     }
-   
-    
+
+    [Test]
+    public void CreateUser_ShouldReturnUser_WhenUserIsCreated()
+    {
+        //arrange
+        const string login = "test";
+        const string email = "test@gmail.com";
+        const string password = "test";
+        //act
+        var result = _userService.CreateUser(login,email,password);
+        //Assert
+        Assert.IsInstanceOf<User>(result);
+        Assert.AreEqual(login,result.Login);
+        Assert.AreEqual(email,result.Email);
+        Assert.True(BCrypt.Net.BCrypt.Verify(password,result.HashedPassword));
+    }
+    [Test]
+    public void CreateUser_ShouldReturnDbException_WhenMethodParametersAreNull()
+    {
+        //arrange
+        string? login = null!;
+        string? email = null!;
+        string? password = null!;
+       
+        //Assert
+        Assert.Throws<ArgumentNullException>(() => _userService.CreateUser(login,email,password));
+    }
 }
