@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using student_integration_system_backend.Entities;
+using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Services.UserRoleService;
-using student_integration_system_backend.Services.UserService;
 
 namespace student_integration_system_unit_test;
 
@@ -12,11 +12,16 @@ public class UserRoleServiceTests
     private readonly IUserRoleService _userRoleService;
 
     private Role? _role;
+    private const int RoleId = 1;
+    private const string RoleName = "Client";
+    
     private User? _user;
     private const int UserId = 1;
     private const string Email = "example@gmail.com";
     private const string Password = "password";
     private const string Login = "login";
+
+    private const string ExceptionMessage = "Role not found";
 
     public UserRoleServiceTests()
     {
@@ -36,8 +41,8 @@ public class UserRoleServiceTests
         };
         _role = new Role
         {
-            Id = 1,
-            Name = "Client"
+            Id = RoleId,
+            Name = RoleName
         };
         _dbContext.Users.Add(_user);
         _dbContext.Roles.Add(_role);
@@ -53,15 +58,39 @@ public class UserRoleServiceTests
         {
             Id = 2,
             Email = "test@gmail.com",
-            Login = "login1",
+            Login = "login2",
             HashedPassword = "password"
         };
+        _dbContext.Users.Add(user);
+        _dbContext.SaveChanges();
         var role = _role;
         //Act
         _userRoleService.CreateUserRole(user, role!);
-        var result = _dbContext.UserRoles.FirstOrDefault(userRole => userRole.RoleId == _role!.Id && userRole.UserId == _user!.Id);
+        var result = _dbContext.UserRoles.FirstOrDefault(userRole => userRole.RoleId == _role!.Id && userRole.UserId == user.Id);
         //Assert
-        Assert.IsNotNull(result);
         Assert.IsInstanceOf<UserRole>(result);
+        Assert.AreEqual(user,result!.User);
+        Assert.AreEqual(role,result!.Role);
     }
+
+    [Test]
+    public void GetUserRole_ShouldReturnRole_WhenExist()
+    {
+        //Act
+        var result = _userRoleService.GetUserRole(_user!);
+        //Assert
+        Assert.AreEqual(_role!,result);
+    }
+
+    [Test]
+    public void GetUserRole_ShouldThrowNotFoundExceptionWithMessage_WhenNotExist()
+    {
+        //Arrange
+        var user = new User();
+        //Act
+        var result = Assert.Throws<NotFoundException>(() => _userRoleService.GetUserRole(user));
+        //Assert
+        Assert.AreEqual(ExceptionMessage,result!.Message);
+    }
+    
 }
