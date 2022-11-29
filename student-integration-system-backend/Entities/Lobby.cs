@@ -5,6 +5,7 @@ public class Lobby
     public int Id { get; set; }
     public int MaxSeats { get; set; }
     public string Name { get; set; }
+    public DateTime StartDate { get; set; }
     public LobbyType Type { get; set; }
     public int? PlaceId { get; set; }
     public int? CustomPlaceId { get; set; }
