@@ -38,6 +38,7 @@ public class LobbyServiceImpl : ILobbyService
         {
             MaxSeats = request.MaxSeats,
             Name = request.Name,
+            StartDate = request.StartDate,
             Type = request.Type,
             Place = (request.PlaceId is null) ? null : _placeService.GetPlaceById((int) request.PlaceId),
             CustomPlace = (request.CustomPlaceId is null) ?
