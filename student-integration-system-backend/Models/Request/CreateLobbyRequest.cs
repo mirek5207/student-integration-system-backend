@@ -11,7 +11,6 @@ public class CreateLobbyRequest
     public LobbyType Type { get; set; }
     public int? PlaceId { get; set; }
     public int? CustomPlaceId { get; set; }
-    public int OwnerId { get; set; }
 }
 
 public class CreateLobbyRequestValidator : AbstractValidator<CreateLobbyRequest>
@@ -36,7 +35,5 @@ public class CreateLobbyRequestValidator : AbstractValidator<CreateLobbyRequest>
             RuleFor(l => l.CustomPlaceId)
                 .GreaterThan(0).WithMessage("CustomPlaceId have to be greater than 0");
         });
-        RuleFor(l => l.OwnerId)
-            .NotEmpty().WithMessage("OwnerId is required");
     }
 }
