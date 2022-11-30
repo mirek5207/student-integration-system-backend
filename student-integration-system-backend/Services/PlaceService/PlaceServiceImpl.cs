@@ -61,8 +61,7 @@ public class PlaceServiceImpl : IPlaceService
     public IEnumerable<Place> GetAllPlacesOwnedByPlaceOwner(int userId)
     {
         var placeOwner = _ownerService.GetPlaceOwnerByUserId(userId);
-        if (placeOwner == null) throw new NotFoundException("Place owner not found");
-        var places = _dbContext.Places.ToList();
+        var places = _dbContext.Places.Where(p => p.PlaceOwner == placeOwner).ToList();
         return places;
     }
 }

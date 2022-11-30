@@ -95,7 +95,7 @@ public class PlaceOwnerController : ControllerBase
     /// </summary>
     [HttpGet("getPlaces/{userId:int}")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<List<Place>> GetAllPlacesOwnedByPlaceOwner(int userId)
+    public ActionResult<IEnumerable<Place>> GetAllPlacesOwnedByPlaceOwner(int userId)
     {
         var response = _placeService.GetAllPlacesOwnedByPlaceOwner(userId);
         return Ok(response);
