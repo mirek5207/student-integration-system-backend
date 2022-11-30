@@ -8,6 +8,7 @@ public class CreateReservationRequest
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public int NumberOfGuests { get; set; }
+    public string PhoneNumber { get; set; }
     public int PlaceId { get; set; }
     public int LobbyId { get; set; }
 }
@@ -20,6 +21,8 @@ public class CreateReservationRequestValidator : AbstractValidator<CreateReserva
             .NotNull().WithMessage("Start date is required");
         RuleFor(r => r.EndDate)
             .NotNull().WithMessage("End date is required");
+        RuleFor(r => r.PhoneNumber)
+            .NotNull().WithMessage("Phone is required");
         RuleFor(r => r.NumberOfGuests)
             .GreaterThan(0).WithMessage("Number of reserved seats must be greater than 0.");
         RuleFor(r => r.PlaceId)

@@ -7,6 +7,7 @@ public class Reservation
     public DateTime EndDate { get; set; }
     public int NumberOfGuests { get; set; }
     public ReservationStatus Status { get; set; }
+    public string PhoneNumber { get; set; }
     public int PlaceId { get; set; }
     public int LobbyId { get; set; }
     public virtual Place Place { get; set; }

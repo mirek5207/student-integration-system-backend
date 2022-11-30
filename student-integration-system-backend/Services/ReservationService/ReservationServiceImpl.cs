@@ -25,6 +25,7 @@ public class ReservationServiceImpl : IReservationService
             NumberOfGuests = request.NumberOfGuests,
             StartDate = request.StartDate,
             EndDate = request.EndDate,
+            PhoneNumber = request.PhoneNumber,
             Status = ReservationStatus.Sent,
             Place = _placeService.GetPlaceById(request.PlaceId),
             Lobby = _lobbyService.GetLobbyById(request.LobbyId)
