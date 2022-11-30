@@ -25,6 +25,7 @@ using student_integration_system_backend.Services.ModeratorService;
 using student_integration_system_backend.Services.PlaceOwnerService;
 using student_integration_system_backend.Services.PlaceService;
 using student_integration_system_backend.Services.Reports;
+using student_integration_system_backend.Services.ReservationService;
 using student_integration_system_backend.Services.RoleService;
 using student_integration_system_backend.Services.UserRoleService;
 using student_integration_system_backend.Services.UserService;
@@ -94,6 +95,7 @@ builder.Services.AddScoped<ILobbyService, LobbyServiceImpl>();
 builder.Services.AddScoped<ILobbyOwnerService, LobbyOwnerServiceImpl>();
 builder.Services.AddScoped<ILobbyGuestService, LobbyGuestServiceImpl>();
 builder.Services.AddScoped<IFriendService, FriendServiceImpl>();
+builder.Services.AddScoped<IReservationService, ReservationServiceImpl>();
 
 //Fluent validation
 builder.Services.AddFluentValidation();
@@ -112,6 +114,7 @@ builder.Services.AddScoped<IValidator<UpdateStatusOfReportRequest>, UpdateStatus
 builder.Services.AddScoped<IValidator<CreateCustomPlaceRequest>, CreateCustomPlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateCustomPlaceRequest>, UpdateCustomPlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<CreateLobbyRequest>, CreateLobbyRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateReservationRequest>, CreateReservationRequestValidator>();
 
 
 //Database connection
