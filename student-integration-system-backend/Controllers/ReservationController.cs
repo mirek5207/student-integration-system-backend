@@ -29,4 +29,15 @@ public class ReservationController : ControllerBase
         var reservation = _reservationService.CreateReservation(request);
         return Ok(reservation);
     }
+    
+    /// <summary>
+    /// Get all confirmed reservation for specific lobby and day.
+    /// </summary>
+    [HttpPost("getConfirmedReservationsForOneDay")]
+    [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<IEnumerable<Reservation>> GetAllConfirmedReservationsForSpecificdLobbyAndDay(DateTime date, int placeId)
+    {
+        var reservations = _reservationService.GetAllConfirmedReservationsForSpecificdLobbyAndDay(date, placeId);
+        return Ok(reservations);
+    }
 }

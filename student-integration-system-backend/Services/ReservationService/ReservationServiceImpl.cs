@@ -1,4 +1,5 @@
 ﻿using student_integration_system_backend.Entities;
+using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Services.LobbyService;
 using student_integration_system_backend.Services.PlaceService;
@@ -9,13 +10,13 @@ public class ReservationServiceImpl : IReservationService
 {
     private readonly IPlaceService _placeService;
     private readonly ILobbyService _lobbyService;
-    private readonly AppDbContext _appDbContext;
+    private readonly AppDbContext _dbContext;
 
-    public ReservationServiceImpl(IPlaceService placeService, ILobbyService lobbyService, AppDbContext appDbContext)
+    public ReservationServiceImpl(IPlaceService placeService, ILobbyService lobbyService, AppDbContext dbContext)
     {
         _placeService = placeService;
         _lobbyService = lobbyService;
-        _appDbContext = appDbContext;
+        _dbContext = dbContext;
     }
     
     public Reservation CreateReservation(CreateReservationRequest request)
@@ -30,8 +31,19 @@ public class ReservationServiceImpl : IReservationService
             Place = _placeService.GetPlaceById(request.PlaceId),
             Lobby = _lobbyService.GetLobbyById(request.LobbyId)
         };
-        _appDbContext.Reservations.Add(reservation);
-        _appDbContext.SaveChanges();
+        _dbContext.Reservations.Add(reservation);
+        _dbContext.SaveChanges();
         return reservation;
+    }
+
+    public IEnumerable<Reservation> GetAllConfirmedReservationsForSpecificdLobbyAndDay(DateTime date, int placeId)
+    {
+        var reservations = _dbContext.Reservations.Where(r => r.Status == ReservationStatus.Confirmed
+                                                              && (r.StartDate.Date == date.Date ||
+                                                                  r.EndDate.Date == date.Date)
+                                                              && r.PlaceId == placeId).ToList();
+        if (reservations.Count == 0)
+            throw new NotFoundException("Reservations for this day not found.");
+        return reservations;
     }
 }
