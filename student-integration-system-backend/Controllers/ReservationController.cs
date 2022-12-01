@@ -46,9 +46,9 @@ public class ReservationController : ControllerBase
     /// </summary>
     [HttpGet("getSentReservationsForPlace")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<IEnumerable<Reservation>> GetAllSentReservationsForPlace(DateTime date, int placeId)
+    public ActionResult<IEnumerable<Reservation>> GetAllSentReservationsForPlace(int placeId)
     {
-        var reservations = _reservationService.GetAllConfirmedReservationsForSpecificPlaceAndDay(date, placeId);
+        var reservations = _reservationService.GetAllSentReservationsForPlace(placeId);
         return Ok(reservations);
     }
 }
