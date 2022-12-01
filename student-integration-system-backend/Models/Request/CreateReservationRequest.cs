@@ -15,7 +15,7 @@ public class CreateReservationRequest
 
 public class CreateReservationRequestValidator : AbstractValidator<CreateReservationRequest>
 {
-    public CreateReservationRequestValidator()
+    public CreateReservationRequestValidator(AppDbContext dbContext)
     {
         RuleFor(r => r.StartDate)
             .NotNull().WithMessage("Start date is required");
@@ -25,6 +25,12 @@ public class CreateReservationRequestValidator : AbstractValidator<CreateReserva
             .NotNull().WithMessage("Phone is required");
         RuleFor(r => r.NumberOfGuests)
             .GreaterThan(0).WithMessage("Number of reserved seats must be greater than 0.");
+        RuleFor(r => new {r.NumberOfGuests, r.LobbyId})
+            .Must((r) =>
+            {
+                var maxSeats = dbContext.Lobbies.Where(l => l.Id == r.LobbyId).Select(l => l.MaxSeats).First();
+                return maxSeats <= r.NumberOfGuests;
+            }).WithMessage("Number of reserved seats must be less or equal than maximum seats in lobby.");
         RuleFor(r => r.PlaceId)
             .NotEmpty().WithMessage("PlaceId is required");
         RuleFor(r => r.LobbyId)
