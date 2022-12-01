@@ -10,4 +10,5 @@ public interface IReservationService
     IEnumerable<Reservation> GetAllSentReservationsForPlace(int placeId);
     Reservation GetReservationById(int reservationId);
     string DeclinedReservation(int reservationId);
+    string ConfirmReservation(int reservationId);
 }

@@ -62,4 +62,15 @@ public class ReservationController : ControllerBase
         var message = _reservationService.DeclinedReservation(reservationId);
         return Ok(message);
     }
+    
+    /// <summary>
+    /// Update reservations status to confirmed.
+    /// </summary>
+    [HttpPatch("confirmReservation")]
+    [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<string> ConfirmReservation(int reservationId)
+    {
+        var message = _reservationService.ConfirmReservation(reservationId);
+        return Ok(message);
+    }
 }

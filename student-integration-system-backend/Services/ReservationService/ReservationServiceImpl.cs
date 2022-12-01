@@ -77,4 +77,15 @@ public class ReservationServiceImpl : IReservationService
         
         return "Reservation declained";
     }
+
+    public string ConfirmReservation(int reservationId)
+    {
+        var reservation = GetReservationById(reservationId);
+        if (reservation.Status == ReservationStatus.Declined)
+            throw new ForbiddenException("Declined reservation can't be confirmed.");
+        reservation.Status = ReservationStatus.Confirmed;
+        _dbContext.SaveChanges();
+        
+        return "Reservation confirmed";
+    }
 }
