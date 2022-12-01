@@ -11,4 +11,5 @@ public interface IReservationService
     Reservation GetReservationById(int reservationId);
     string DeclinedReservation(int reservationId);
     string ConfirmReservation(int reservationId);
+    string DeleteReservation(int reservationId);
 }

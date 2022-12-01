@@ -53,7 +53,7 @@ public class ReservationController : ControllerBase
     }
     
     /// <summary>
-    /// Update reservations status to declined.
+    /// Update reservation status to declined.
     /// </summary>
     [HttpPatch("declineReservation")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -64,13 +64,24 @@ public class ReservationController : ControllerBase
     }
     
     /// <summary>
-    /// Update reservations status to confirmed.
+    /// Update reservation status to confirmed.
     /// </summary>
     [HttpPatch("confirmReservation")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<string> ConfirmReservation(int reservationId)
     {
         var message = _reservationService.ConfirmReservation(reservationId);
+        return Ok(message);
+    }
+    
+    /// <summary>
+    /// Delete reservation.
+    /// </summary>
+    [HttpDelete("deleteReservation")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<string> DeleteReservation(int reservationId)
+    {
+        var message = _reservationService.DeleteReservation(reservationId);
         return Ok(message);
     }
 }

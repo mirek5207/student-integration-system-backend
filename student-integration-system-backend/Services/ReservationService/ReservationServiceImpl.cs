@@ -75,7 +75,7 @@ public class ReservationServiceImpl : IReservationService
         reservation.Status = ReservationStatus.Declined;
         _dbContext.SaveChanges();
         
-        return "Reservation declained";
+        return "Reservation declined";
     }
 
     public string ConfirmReservation(int reservationId)
@@ -87,5 +87,14 @@ public class ReservationServiceImpl : IReservationService
         _dbContext.SaveChanges();
         
         return "Reservation confirmed";
+    }
+
+    public string DeleteReservation(int reservationId)
+    {
+        var reservation = GetReservationById(reservationId);
+        _dbContext.Remove(reservation);
+        _dbContext.SaveChanges();
+        
+        return "Reservation deleted";
     }
 }
