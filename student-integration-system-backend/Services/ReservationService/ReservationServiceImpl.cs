@@ -36,11 +36,20 @@ public class ReservationServiceImpl : IReservationService
         return reservation;
     }
 
-    public IEnumerable<Reservation> GetAllConfirmedReservationsForSpecificdLobbyAndDay(DateTime date, int placeId)
+    public IEnumerable<Reservation> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime date, int placeId)
     {
         var reservations = _dbContext.Reservations.Where(r => r.Status == ReservationStatus.Confirmed
                                                               && (r.StartDate.Date == date.Date ||
                                                                   r.EndDate.Date == date.Date)
+                                                              && r.PlaceId == placeId).ToList();
+        if (reservations.Count == 0)
+            throw new NotFoundException("Reservations for this day not found.");
+        return reservations;
+    }
+
+    public IEnumerable<Reservation> GetAllSentReservationsForPlace(int placeId)
+    {
+        var reservations = _dbContext.Reservations.Where(r => r.Status == ReservationStatus.Sent
                                                               && r.PlaceId == placeId).ToList();
         if (reservations.Count == 0)
             throw new NotFoundException("Reservations for this day not found.");

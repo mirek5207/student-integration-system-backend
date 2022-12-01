@@ -6,5 +6,6 @@ namespace student_integration_system_backend.Services.ReservationService;
 public interface IReservationService
 {
     Reservation CreateReservation(CreateReservationRequest request);
-    IEnumerable<Reservation> GetAllConfirmedReservationsForSpecificdLobbyAndDay(DateTime day, int lobbyId);
+    IEnumerable<Reservation> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime day, int lobbyId);
+    IEnumerable<Reservation> GetAllSentReservationsForPlace(int placeId);
 }

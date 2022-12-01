@@ -33,11 +33,22 @@ public class ReservationController : ControllerBase
     /// <summary>
     /// Get all confirmed reservation for specific lobby and day.
     /// </summary>
-    [HttpPost("getConfirmedReservationsForOneDay")]
+    [HttpGet("getConfirmedReservationsForOneDay")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<IEnumerable<Reservation>> GetAllConfirmedReservationsForSpecificdLobbyAndDay(DateTime date, int placeId)
+    public ActionResult<IEnumerable<Reservation>> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime date, int placeId)
     {
-        var reservations = _reservationService.GetAllConfirmedReservationsForSpecificdLobbyAndDay(date, placeId);
+        var reservations = _reservationService.GetAllConfirmedReservationsForSpecificPlaceAndDay(date, placeId);
+        return Ok(reservations);
+    }
+    
+    /// <summary>
+    /// Get all sent reservation for specific lobby.
+    /// </summary>
+    [HttpGet("getSentReservationsForPlace")]
+    [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<IEnumerable<Reservation>> GetAllSentReservationsForPlace(DateTime date, int placeId)
+    {
+        var reservations = _reservationService.GetAllConfirmedReservationsForSpecificPlaceAndDay(date, placeId);
         return Ok(reservations);
     }
 }
