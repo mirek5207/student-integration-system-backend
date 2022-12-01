@@ -84,4 +84,15 @@ public class ReservationController : ControllerBase
         var message = _reservationService.DeleteReservation(reservationId);
         return Ok(message);
     }
+    
+    /// <summary>
+    /// Update reservation.
+    /// </summary>
+    [HttpDelete("updateReservation")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Reservation> UpdateReservation(UpdateReservationRequest request, int reservationId)
+    {
+        var reservation = _reservationService.UpdateReservation(request, reservationId);
+        return Ok(reservation);
+    }
 }

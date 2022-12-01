@@ -97,4 +97,18 @@ public class ReservationServiceImpl : IReservationService
         
         return "Reservation deleted";
     }
+
+    public Reservation UpdateReservation(UpdateReservationRequest request, int reservationId)
+    {
+        var reservation = GetReservationById(reservationId);
+        if (reservation.Status != ReservationStatus.Sent)
+            throw new ForbiddenException("You can only update sent reservation.");
+        reservation.StartDate = request.StartDate;
+        reservation.EndDate = request.EndDate;
+        reservation.PhoneNumber = request.PhoneNumber;
+        reservation.NumberOfGuests = request.NumberOfGuests;
+        _dbContext.SaveChanges();
+
+        return reservation;
+    }
 }
