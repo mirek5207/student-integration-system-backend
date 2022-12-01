@@ -8,4 +8,6 @@ public interface IReservationService
     Reservation CreateReservation(CreateReservationRequest request);
     IEnumerable<Reservation> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime day, int lobbyId);
     IEnumerable<Reservation> GetAllSentReservationsForPlace(int placeId);
+    Reservation GetReservationById(int reservationId);
+    string DeclinedReservation(int reservationId);
 }

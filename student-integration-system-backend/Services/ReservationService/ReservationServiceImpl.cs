@@ -1,4 +1,5 @@
-﻿using student_integration_system_backend.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using student_integration_system_backend.Entities;
 using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Services.LobbyService;
@@ -54,5 +55,26 @@ public class ReservationServiceImpl : IReservationService
         if (reservations.Count == 0)
             throw new NotFoundException("Reservations for this day not found.");
         return reservations;
+    }
+
+    public Reservation GetReservationById(int reservationId)
+    {
+        var reservation = _dbContext.Reservations.FirstOrDefault(r => r.Id == reservationId);
+
+        if (reservation is null)
+        {
+            throw new NotFoundException("Reservation not found");
+        }
+
+        return reservation;
+    }
+
+    public string DeclinedReservation(int reservationId)
+    {
+        var reservation = GetReservationById(reservationId);
+        reservation.Status = ReservationStatus.Declined;
+        _dbContext.SaveChanges();
+        
+        return "Reservation declained";
     }
 }

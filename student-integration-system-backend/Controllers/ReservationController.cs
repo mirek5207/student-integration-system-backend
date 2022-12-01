@@ -51,4 +51,15 @@ public class ReservationController : ControllerBase
         var reservations = _reservationService.GetAllSentReservationsForPlace(placeId);
         return Ok(reservations);
     }
+    
+    /// <summary>
+    /// Update reservations status to declined.
+    /// </summary>
+    [HttpPatch("declineReservation")]
+    [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<string> DeclineReservation(int reservationId)
+    {
+        var message = _reservationService.DeclinedReservation(reservationId);
+        return Ok(message);
+    }
 }
