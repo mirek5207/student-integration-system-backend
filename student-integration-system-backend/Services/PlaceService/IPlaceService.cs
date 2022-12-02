@@ -12,4 +12,5 @@ public interface IPlaceService
 
     Place GetPlaceById(int placeId);
     IEnumerable<Place> GetAllPlacesOwnedByPlaceOwner(int userId);
+    IEnumerable<Place> GetAllPlaces();
 }

@@ -60,4 +60,13 @@ public class PlaceServiceImpl : IPlaceService
         var places = _dbContext.Places.Where(p => p.PlaceOwner == placeOwner).ToList();
         return places;
     }
+
+    public IEnumerable<Place> GetAllPlaces()
+    {
+        var places = _dbContext.Places.ToList();
+        if (places.Count == 0)
+            throw new NotFoundException("Places not found");
+
+        return places;
+    }
 }
