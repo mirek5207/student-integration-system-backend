@@ -164,7 +164,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("Client");
 
-//app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
