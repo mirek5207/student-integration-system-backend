@@ -161,7 +161,7 @@ public class LobbyServiceImpl : ILobbyService
     public IEnumerable<Lobby> GetAllLobbiesWhereClientIsInvited(int userId)
     {
         var client = _clientService.GetClientByUserId(userId);
-        var lobbies = _dbContext.Lobbies.Include(l => l.LobbyGuests)
+        var lobbies = _dbContext.Lobbies.Include(lobby => lobby.LobbyOwner.Client).ThenInclude(l => l.LobbyGuests)
             .Where(l => (l.LobbyGuests.Where(lg => lg.Client == client && lg.Status == LobbyGuestStatus.Sent)
                 .ToList().Count != 0)).ToList();
         if (lobbies is null) throw new NotFoundException("Lobbies not found");
