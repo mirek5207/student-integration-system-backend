@@ -60,6 +60,16 @@ public class ClientController : ControllerBase
         return Ok(response);
     }
     
+    ///<summary>
+    /// Get all clients data except active user
+    /// </summary>
+    [HttpGet("getAllClients/{userId:int}")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<IEnumerable<Client>> GetAllClientsExceptActiveUser(int userId)
+    {
+        var clients = _clientService.GetAllClientsExceptActiveUser(userId);
+        return Ok(clients);
+    }
     
     // --------------------------- Custom Places --------------------------- \\
     

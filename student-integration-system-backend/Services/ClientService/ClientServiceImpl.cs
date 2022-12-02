@@ -80,6 +80,15 @@ public class ClientServiceImpl : IClientService
         return clients;
     }
 
+    public IEnumerable<Client> GetAllClientsExceptActiveUser(int userId)
+    {
+        var clients = _dbContext.Clients.Include(client => client.User.Account).ToList()
+            .Where(client => client.UserId != userId).ToList();
+        if (clients == null) throw new NotFoundException("Clients not found");
+        
+        return clients;
+    }
+
     public Client GetClientByUserId(int userId)
     {
         var client = _dbContext.Clients.FirstOrDefault(client => client.UserId == userId);
