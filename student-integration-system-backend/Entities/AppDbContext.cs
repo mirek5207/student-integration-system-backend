@@ -18,6 +18,7 @@ public class AppDbContext : DbContext
     public DbSet<PlaceOwner> PlacesOwners { get; set; }
     public DbSet<Place> Places { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<Reservation> Reservations { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<Report> Reports { get; set; }

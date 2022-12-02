@@ -24,8 +24,6 @@ public class PlaceServiceImpl : IPlaceService
             Latitude = request.Latitude,
             Longitude = request.Longitude,
             PlaceOwner = _ownerService.GetPlaceOwnerByUserId(request.UserId),
-            NumberOfReservedSeats = 0,
-            MaxSeatsAvailableForReservation = request.MaxSeatsAvailableForReservation,
         };
         _dbContext.Places.Add(place);
         _dbContext.SaveChanges();
@@ -45,8 +43,6 @@ public class PlaceServiceImpl : IPlaceService
         place.Latitude = request.Latitude;
         place.Longitude = request.Longitude;
         place.Name = request.Name;
-        place.NumberOfReservedSeats = request.NumberOfReservedSeats;
-        place.MaxSeatsAvailableForReservation = request.MaxSeatsAvailableForReservation;
         _dbContext.SaveChanges();
         return place;
     }
@@ -61,8 +57,7 @@ public class PlaceServiceImpl : IPlaceService
     public IEnumerable<Place> GetAllPlacesOwnedByPlaceOwner(int userId)
     {
         var placeOwner = _ownerService.GetPlaceOwnerByUserId(userId);
-        if (placeOwner == null) throw new NotFoundException("Place owner not found");
-        var places = _dbContext.Places.ToList();
+        var places = _dbContext.Places.Where(p => p.PlaceOwner == placeOwner).ToList();
         return places;
     }
 }
