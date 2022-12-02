@@ -89,7 +89,7 @@ public class ReservationController : ControllerBase
     /// <summary>
     /// Update reservation.
     /// </summary>
-    [HttpDelete("updateReservation")]
+    [HttpPut("updateReservation")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Reservation> UpdateReservation(UpdateReservationRequest request, int reservationId)
     {
