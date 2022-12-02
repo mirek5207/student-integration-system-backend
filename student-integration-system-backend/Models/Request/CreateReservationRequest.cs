@@ -29,7 +29,7 @@ public class CreateReservationRequestValidator : AbstractValidator<CreateReserva
             .Must((r) =>
             {
                 var maxSeats = dbContext.Lobbies.Where(l => l.Id == r.LobbyId).Select(l => l.MaxSeats).First();
-                return maxSeats <= r.NumberOfGuests;
+                return maxSeats >= r.NumberOfGuests;
             }).WithMessage("Number of reserved seats must be less or equal than maximum seats in lobby.");
         RuleFor(r => r.PlaceId)
             .NotEmpty().WithMessage("PlaceId is required");
