@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
+using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.ReservationService;
 
@@ -35,7 +36,7 @@ public class ReservationController : ControllerBase
     /// </summary>
     [HttpGet("getConfirmedReservationsForOneDay")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<IEnumerable<Reservation>> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime date, int placeId)
+    public ActionResult<IEnumerable<ReservationResponse>> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime date, int placeId)
     {
         var reservations = _reservationService.GetAllConfirmedReservationsForSpecificPlaceAndDay(date, placeId);
         return Ok(reservations);
@@ -46,7 +47,7 @@ public class ReservationController : ControllerBase
     /// </summary>
     [HttpGet("getSentReservationsForPlace")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<IEnumerable<Reservation>> GetAllSentReservationsForPlace(int placeId)
+    public ActionResult<IEnumerable<ReservationResponse>> GetAllSentReservationsForPlace(int placeId)
     {
         var reservations = _reservationService.GetAllSentReservationsForPlace(placeId);
         return Ok(reservations);

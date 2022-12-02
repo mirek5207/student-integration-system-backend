@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using student_integration_system_backend.Entities;
 using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
+using student_integration_system_backend.Models.Response;
 using student_integration_system_backend.Services.LobbyService;
 using student_integration_system_backend.Services.PlaceService;
 
@@ -37,23 +39,31 @@ public class ReservationServiceImpl : IReservationService
         return reservation;
     }
 
-    public IEnumerable<Reservation> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime date, int placeId)
+    public IEnumerable<ReservationResponse> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime date, int placeId)
     {
         var reservations = _dbContext.Reservations.Where(r => r.Status == ReservationStatus.Confirmed
                                                               && (r.StartDate.Date == date.Date ||
                                                                   r.EndDate.Date == date.Date)
-                                                              && r.PlaceId == placeId).ToList();
+                                                              && r.PlaceId == placeId)
+            .Include(r => r.Lobby.LobbyOwner.Client)
+            .Select(r => MapReservationToReservationResponse(r))
+            .ToList();
         if (reservations.Count == 0)
             throw new NotFoundException("Reservations for this day not found.");
+
         return reservations;
     }
 
-    public IEnumerable<Reservation> GetAllSentReservationsForPlace(int placeId)
+    public IEnumerable<ReservationResponse> GetAllSentReservationsForPlace(int placeId)
     {
         var reservations = _dbContext.Reservations.Where(r => r.Status == ReservationStatus.Sent
-                                                              && r.PlaceId == placeId).ToList();
+                                                              && r.PlaceId == placeId)
+            .Include(r => r.Lobby.LobbyOwner.Client)
+            .Select(r => MapReservationToReservationResponse(r))
+            .ToList();
         if (reservations.Count == 0)
             throw new NotFoundException("Reservations for this day not found.");
+        
         return reservations;
     }
 
@@ -110,5 +120,21 @@ public class ReservationServiceImpl : IReservationService
         _dbContext.SaveChanges();
 
         return reservation;
+    }
+
+    public static ReservationResponse MapReservationToReservationResponse(Reservation reservation)
+    {
+        var response = new ReservationResponse
+        {
+            Id = reservation.Id,
+            StartDate = reservation.StartDate,
+            EndDate = reservation.EndDate,
+            NumberOfGuests = reservation.NumberOfGuests,
+            PhoneNumber = reservation.PhoneNumber,
+            Status = reservation.Status,
+            LobbyOwnerFullName = reservation.Lobby.LobbyOwner.Client.FirstName + " " +
+                                 reservation.Lobby.LobbyOwner.Client.SurName
+        };
+        return response;
     }
 }
