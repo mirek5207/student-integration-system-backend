@@ -115,6 +115,7 @@ builder.Services.AddScoped<IValidator<CreateCustomPlaceRequest>, CreateCustomPla
 builder.Services.AddScoped<IValidator<UpdateCustomPlaceRequest>, UpdateCustomPlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<CreateLobbyRequest>, CreateLobbyRequestValidator>();
 builder.Services.AddScoped<IValidator<CreateReservationRequest>, CreateReservationRequestValidator>();
+builder.Services.AddScoped<IValidator<UpdateReservationRequest>, UpdateReservationRequestValidator>();
 
 
 //Database connection
@@ -163,7 +164,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("Client");
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+//app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
