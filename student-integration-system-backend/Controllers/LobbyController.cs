@@ -109,11 +109,11 @@ public class LobbyController : ControllerBase
     /// <summary>
     /// Adds guest to lobby
     /// </summary>
-    [HttpPut("joinLobby{userId:int}")]
+    [HttpPut("joinPublicLobby/{userId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<string> AddGuestToLobby(int userId, int lobbyId)
+    public ActionResult<string> JoinPublicLobby(int userId, int lobbyId)
     {
-        var message = _lobbyService.AddGuestToLobby(userId, lobbyId);
+        var message = _lobbyService.AddGuestToPublicLobby(userId, lobbyId);
         return Ok(message);
     }
 
@@ -142,9 +142,9 @@ public class LobbyController : ControllerBase
     /// <summary>
     /// Accepts invite to the lobby
     /// </summary>
-    [HttpPut("acceptInvite")]
+    [HttpPut("acceptInvite/{userId:int}/{lobbyId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<string> AccpetInviteToLobby(int userId, int lobbyId)
+    public ActionResult<string> AcceptInviteToLobby(int userId, int lobbyId)
     {
         var message = _lobbyService.AcceptInviteToLobby(userId, lobbyId);
         return Ok(message);

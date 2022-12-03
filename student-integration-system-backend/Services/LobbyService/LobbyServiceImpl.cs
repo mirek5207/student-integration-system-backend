@@ -50,6 +50,23 @@ public class LobbyServiceImpl : ILobbyService
         return lobby;
     }
 
+    public Lobby CreateLobbyAtPlace(CreateLobbyAtPlaceRequest request, int userId)
+    {
+        var lobbyOwner = _lobbyOwnerService.GetLobbyOwnerByUserId(userId) ?? _lobbyOwnerService.CreateLobbyOwner(userId);
+        var lobby = new Lobby()
+        {
+            MaxSeats = request.MaxSeats,
+            Name = request.Name,
+            StartDate = request.StartDate,
+            Type = request.Type,
+            Place = _placeService.GetPlaceById((int) request.PlaceId),
+            LobbyOwner = lobbyOwner
+        };
+        _dbContext.Lobbies.Add(lobby);
+        _dbContext.SaveChanges();
+        return lobby;
+    }
+
     public Lobby GetLobbyById(int lobbyId)
     {
         var lobby = _dbContext.Lobbies
@@ -62,7 +79,7 @@ public class LobbyServiceImpl : ILobbyService
         return lobby;
     }
 
-    public string AddGuestToLobby(int userId, int lobbyId)
+    public string AddGuestToPublicLobby(int userId, int lobbyId)
     {
         var lobby = GetLobbyById(lobbyId);
         if (lobby.Type == LobbyType.Private)
