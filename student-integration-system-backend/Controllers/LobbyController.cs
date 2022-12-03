@@ -22,7 +22,7 @@ public class LobbyController : ControllerBase
     /// <summary>
     /// Returns lobby by Id
     /// </summary>
-    [HttpGet("getLobby{lobbyId:int}")]
+    [HttpGet("getLobby/{lobbyId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Lobby> GetLobbyById(int lobbyId)
     {
