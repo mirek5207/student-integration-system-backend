@@ -5,8 +5,10 @@ namespace student_integration_system_backend.Services.LobbyService;
 
 public interface ILobbyService
 {
-    Lobby CreateLobbyAtPlace(CreateLobbyAtPlaceRequest request, int userId);
-    Lobby CreateLobbyAtCustomPlace(CreateLobbyAtCustomPlaceRequest request, int userId);
+    Lobby CreateLobbyAtPlace(LobbyAtPlaceRequest request, int userId);
+    Lobby CreateLobbyAtCustomPlace(LobbyAtCustomPlaceRequest request, int userId);
+    Lobby UpdateLobbyAtPlace(LobbyAtPlaceRequest request, int lobbyId);
+    Lobby UpdateLobbyAtCustomPlace(LobbyAtCustomPlaceRequest request, int lobbyId);
     Lobby GetLobbyById(int lobbyId);
     string AddGuestToPublicLobby(int userId, int lobbyId);
     string InviteGuestToLobby(int userId, int lobbyId);

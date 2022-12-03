@@ -103,7 +103,7 @@ public class LobbyController : ControllerBase
     /// </summary>
     [HttpPost("createLobbyAtPlace")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Lobby> CreateLobbyAtPlace(CreateLobbyAtPlaceRequest request, int userId)
+    public ActionResult<Lobby> CreateLobbyAtPlace(LobbyAtPlaceRequest request, int userId)
     {
         var lobby = _lobbyService.CreateLobbyAtPlace(request, userId);
         return Ok(lobby);
@@ -114,7 +114,7 @@ public class LobbyController : ControllerBase
     /// </summary>
     [HttpPost("createLobbyAtCustomPlace")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Lobby> CreateLobbyAtCustomPlace(CreateLobbyAtCustomPlaceRequest request, int userId)
+    public ActionResult<Lobby> CreateLobbyAtCustomPlace(LobbyAtCustomPlaceRequest request, int userId)
     {
         if (request.CustomPlaceId is null)
         {
@@ -126,9 +126,39 @@ public class LobbyController : ControllerBase
     }
     
     /// <summary>
+    /// Update lobby at place
+    /// </summary>
+    [HttpPut("updateLobbyAtPlace")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Lobby> UpdateLobbyAtPlace(LobbyAtPlaceRequest request, int lobbyId)
+    {
+        var lobby = _lobbyService.UpdateLobbyAtPlace(request, lobbyId);
+        return Ok(lobby);
+    }
+    
+    /// <summary>
+    /// Update lobby at custom place
+    /// </summary>
+    [HttpPut("updateLobbyAtCustomPlace")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Lobby> UpdateLobbyAtCustomPlace(LobbyAtCustomPlaceRequest request, int lobbyId)
+    {
+        var lobby = _lobbyService.GetLobbyById(lobbyId);
+        if (request.CustomPlaceId is null)
+        {
+            var customPlace = _customPlaceService.CreateCustomPlace(request, lobby.LobbyOwner.Client.UserId);
+            request.CustomPlaceId = customPlace.Id;
+        }
+
+        _customPlaceService.UpdateCustomPlace(request);
+        lobby = _lobbyService.UpdateLobbyAtCustomPlace(request, lobbyId);
+        return Ok(lobby);
+    }
+    
+    /// <summary>
     /// Adds guest to lobby
     /// </summary>
-    [HttpPut("joinPublicLobby/{userId:int}")]
+    [HttpPatch("joinPublicLobby/{userId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<string> JoinPublicLobby(int userId, int lobbyId)
     {
@@ -161,7 +191,7 @@ public class LobbyController : ControllerBase
     /// <summary>
     /// Accepts invite to the lobby
     /// </summary>
-    [HttpPut("acceptInvite/{userId:int}/{lobbyId:int}")]
+    [HttpPatch("acceptInvite/{userId:int}/{lobbyId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<string> AcceptInviteToLobby(int userId, int lobbyId)
     {

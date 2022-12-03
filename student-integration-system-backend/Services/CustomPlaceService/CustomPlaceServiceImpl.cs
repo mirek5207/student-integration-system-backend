@@ -16,7 +16,7 @@ public class CustomPlaceServiceImpl : ICustomPlaceService
         _clientService = clientService;
     }
 
-    public CustomPlace CreateCustomPlace(CreateLobbyAtCustomPlaceRequest request, int userId)
+    public CustomPlace CreateCustomPlace(LobbyAtCustomPlaceRequest request, int userId)
     {
         var place = new CustomPlace
         {
@@ -38,9 +38,10 @@ public class CustomPlaceServiceImpl : ICustomPlaceService
         _dbContext.SaveChanges();
     }
     
-    public CustomPlace UpdateCustomPlace(int customPlaceId, UpdateCustomPlaceRequest request)
+    public CustomPlace UpdateCustomPlace(LobbyAtCustomPlaceRequest request)
     {
-        var customPlace = GetCustomPlaceById(customPlaceId);
+        var customPlace = GetCustomPlaceById((int)request.CustomPlaceId!);
+        customPlace.Name = request.CustomPlaceName;
         customPlace.Latitude = request.Latitude;
         customPlace.Longitude = request.Longitude;
         customPlace.Description = request.Description;
