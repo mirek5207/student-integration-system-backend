@@ -80,9 +80,9 @@ public class ClientController : ControllerBase
     [HttpPost("createCustomPlace")]
     [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<CustomPlace> CreateCustomPlace(CreateCustomPlaceRequest request)
+    public ActionResult<CustomPlace> CreateCustomPlace(CreateLobbyAtCustomPlaceRequest request, int userId)
     {
-        var response = _placeService.CreateCustomPlace(request);
+        var response = _placeService.CreateCustomPlace(request, userId);
         return Ok(response);
     }
     

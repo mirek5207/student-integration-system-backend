@@ -16,13 +16,14 @@ public class CustomPlaceServiceImpl : ICustomPlaceService
         _clientService = clientService;
     }
 
-    public CustomPlace CreateCustomPlace(CreateCustomPlaceRequest request)
+    public CustomPlace CreateCustomPlace(CreateLobbyAtCustomPlaceRequest request, int userId)
     {
         var place = new CustomPlace
         {
+            Name = request.CustomPlaceName,
             Latitude = request.Latitude,
             Longitude = request.Longitude,
-            Client = _clientService.GetClientByUserId(request.UserId),
+            Client = _clientService.GetClientByUserId(userId),
             Description = request.Description
         };
         _dbContext.CustomPlaces.Add(place);

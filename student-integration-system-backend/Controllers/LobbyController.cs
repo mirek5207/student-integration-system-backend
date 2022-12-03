@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Seeds;
+using student_integration_system_backend.Services.CustomPlaceService;
 using student_integration_system_backend.Services.LobbyService;
 
 namespace student_integration_system_backend.Controllers;
@@ -13,10 +14,12 @@ namespace student_integration_system_backend.Controllers;
 public class LobbyController : ControllerBase
 {
     private readonly ILobbyService _lobbyService;
-
-    public LobbyController(ILobbyService lobbyService)
+    private readonly ICustomPlaceService _customPlaceService;
+    
+    public LobbyController(ILobbyService lobbyService, ICustomPlaceService customPlaceService)
     {
         _lobbyService = lobbyService;
+        _customPlaceService = customPlaceService;
     }
 
     /// <summary>
@@ -96,13 +99,29 @@ public class LobbyController : ControllerBase
     }
         
     /// <summary>
-    /// Creates new lobby
+    /// Creates new lobby at place
     /// </summary>
-    [HttpPost("createLobby")]
+    [HttpPost("createLobbyAtPlace")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<Lobby> CreateLobby(CreateLobbyRequest request, int userId)
+    public ActionResult<Lobby> CreateLobbyAtPlace(CreateLobbyAtPlaceRequest request, int userId)
     {
-        var lobby = _lobbyService.CreateLobby(request, userId);
+        var lobby = _lobbyService.CreateLobbyAtPlace(request, userId);
+        return Ok(lobby);
+    }
+
+    /// <summary>
+    /// Creates new lobby at custom place
+    /// </summary>
+    [HttpPost("createLobbyAtCustomPlace")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Lobby> CreateLobbyAtCustomPlace(CreateLobbyAtCustomPlaceRequest request, int userId)
+    {
+        if (request.CustomPlaceId is null)
+        {
+            var customPlace = _customPlaceService.CreateCustomPlace(request, userId);
+            request.CustomPlaceId = customPlace.Id;
+        }
+        var lobby = _lobbyService.CreateLobbyAtCustomPlace(request, userId);
         return Ok(lobby);
     }
     

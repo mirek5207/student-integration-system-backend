@@ -5,8 +5,8 @@ namespace student_integration_system_backend.Services.LobbyService;
 
 public interface ILobbyService
 {
-    Lobby CreateLobby(CreateLobbyRequest request, int userId);
     Lobby CreateLobbyAtPlace(CreateLobbyAtPlaceRequest request, int userId);
+    Lobby CreateLobbyAtCustomPlace(CreateLobbyAtCustomPlaceRequest request, int userId);
     Lobby GetLobbyById(int lobbyId);
     string AddGuestToPublicLobby(int userId, int lobbyId);
     string InviteGuestToLobby(int userId, int lobbyId);

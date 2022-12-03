@@ -113,7 +113,8 @@ builder.Services.AddScoped<IValidator<UpdatePlaceRequest>, UpdatePlaceRequestVal
 builder.Services.AddScoped<IValidator<UpdateStatusOfReportRequest>, UpdateStatusOfReportRequestValidator>();
 builder.Services.AddScoped<IValidator<CreateCustomPlaceRequest>, CreateCustomPlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateCustomPlaceRequest>, UpdateCustomPlaceRequestValidator>();
-builder.Services.AddScoped<IValidator<CreateLobbyRequest>, CreateLobbyRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateLobbyAtPlaceRequest>, CreateLobbyAtPlaceRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateLobbyAtCustomPlaceRequest>, CreateLobbyAtCustomPlaceRequestValidator>();
 builder.Services.AddScoped<IValidator<CreateReservationRequest>, CreateReservationRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdateReservationRequest>, UpdateReservationRequestValidator>();
 

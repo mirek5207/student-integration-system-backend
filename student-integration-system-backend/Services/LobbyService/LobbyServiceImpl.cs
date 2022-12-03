@@ -30,26 +30,6 @@ public class LobbyServiceImpl : ILobbyService
         _clientService = clientService;
     }
 
-
-    public Lobby CreateLobby(CreateLobbyRequest request, int userId)
-    {
-        var lobbyOwner = _lobbyOwnerService.GetLobbyOwnerByUserId(userId) ?? _lobbyOwnerService.CreateLobbyOwner(userId);
-        var lobby = new Lobby()
-        {
-            MaxSeats = request.MaxSeats,
-            Name = request.Name,
-            StartDate = request.StartDate,
-            Type = request.Type,
-            Place = (request.PlaceId is null) ? null : _placeService.GetPlaceById((int) request.PlaceId),
-            CustomPlace = (request.CustomPlaceId is null) ?
-                null : _customPlaceService.GetCustomPlaceById((int) request.CustomPlaceId),
-            LobbyOwner = lobbyOwner
-        };
-        _dbContext.Lobbies.Add(lobby);
-        _dbContext.SaveChanges();
-        return lobby;
-    }
-
     public Lobby CreateLobbyAtPlace(CreateLobbyAtPlaceRequest request, int userId)
     {
         var lobbyOwner = _lobbyOwnerService.GetLobbyOwnerByUserId(userId) ?? _lobbyOwnerService.CreateLobbyOwner(userId);
@@ -60,6 +40,23 @@ public class LobbyServiceImpl : ILobbyService
             StartDate = request.StartDate,
             Type = request.Type,
             Place = _placeService.GetPlaceById((int) request.PlaceId),
+            LobbyOwner = lobbyOwner
+        };
+        _dbContext.Lobbies.Add(lobby);
+        _dbContext.SaveChanges();
+        return lobby;
+    }
+
+    public Lobby CreateLobbyAtCustomPlace(CreateLobbyAtCustomPlaceRequest request, int userId)
+    {
+        var lobbyOwner = _lobbyOwnerService.GetLobbyOwnerByUserId(userId) ?? _lobbyOwnerService.CreateLobbyOwner(userId);
+        var lobby = new Lobby()
+        {
+            MaxSeats = request.MaxSeats,
+            Name = request.Name,
+            StartDate = request.StartDate,
+            Type = request.Type,
+            CustomPlace =  _customPlaceService.GetCustomPlaceById((int) request.CustomPlaceId!),
             LobbyOwner = lobbyOwner
         };
         _dbContext.Lobbies.Add(lobby);
