@@ -170,7 +170,7 @@ public class LobbyServiceImpl : ILobbyService
 
     public IEnumerable<LobbyGuest> GetAllLobbyGuestsForLobby(int lobbyId)
     {
-        var lobbyGuests = _dbContext.LobbyGuests.Include(lg => lg.Client)
+        var lobbyGuests = _dbContext.LobbyGuests.Include(lg => lg.Client.User)
             .Where(lg => lg.LobbyId == lobbyId);
         return lobbyGuests;
     }

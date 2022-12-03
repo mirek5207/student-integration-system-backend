@@ -29,6 +29,16 @@ public class LobbyController : ControllerBase
         var lobby = _lobbyService.GetLobbyById(lobbyId);
         return Ok(lobby);
     }
+    /// <summary>
+    /// Returns guest of lobby by lobbyId
+    /// </summary>
+    [HttpGet("getLobbyGuests/{lobbyId:int}")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<LobbyGuest> GetLobbyGuests(int lobbyId)
+    {
+        var response = _lobbyService.GetAllLobbyGuestsForLobby(lobbyId);
+        return Ok(response);
+    }
 
     /// <summary>
     /// Returns all lobbies
