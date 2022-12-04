@@ -78,6 +78,20 @@ public class ReservationServiceImpl : IReservationService
 
         return reservation;
     }
+    public Reservation? GetReservationByLobbyId(int lobbyId)
+    {
+        var reservation = _dbContext.Reservations.FirstOrDefault(r => r.LobbyId == lobbyId);
+        return reservation;
+    }
+
+    public string DeleteReservationByLobbyId(int lobbyId)
+    {
+        var reservation = GetReservationByLobbyId(lobbyId);
+        if (reservation == null) return "There is no reservation for this lobby";
+        _dbContext.Reservations.Remove(reservation);
+        _dbContext.SaveChanges();
+        return "Reservation Deleted";
+    }
 
     public string DeclinedReservation(int reservationId)
     {

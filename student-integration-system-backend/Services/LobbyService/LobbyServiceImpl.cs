@@ -7,6 +7,7 @@ using student_integration_system_backend.Services.CustomPlaceService;
 using student_integration_system_backend.Services.LobbyGuestService;
 using student_integration_system_backend.Services.LobbyOwnerService;
 using student_integration_system_backend.Services.PlaceService;
+using student_integration_system_backend.Services.ReservationService;
 
 namespace student_integration_system_backend.Services.LobbyService;
 
@@ -128,6 +129,13 @@ public class LobbyServiceImpl : ILobbyService
         _dbContext.SaveChanges();
         return message;
     }
+    public string DeleteLobby(int lobbyId)
+    {
+        var lobby = GetLobbyById(lobbyId);
+        _dbContext.Lobbies.Remove(lobby);
+        _dbContext.SaveChanges();
+        return "Lobby deleted. ";
+    }
 
     public string AcceptInviteToLobby(int userId, int lobbyId)
     {
@@ -191,4 +199,5 @@ public class LobbyServiceImpl : ILobbyService
             .Where(lg => lg.LobbyId == lobbyId);
         return lobbyGuests;
     }
+    
 }

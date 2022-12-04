@@ -10,6 +10,8 @@ public interface IReservationService
     IEnumerable<ReservationResponse> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime day, int placeId);
     IEnumerable<ReservationResponse> GetAllSentReservationsForPlace(int placeId);
     Reservation GetReservationById(int reservationId);
+    Reservation? GetReservationByLobbyId(int lobbyId);
+    string DeleteReservationByLobbyId(int lobbyId);
     string DeclinedReservation(int reservationId);
     string ConfirmReservation(int reservationId);
     string DeleteReservation(int reservationId);

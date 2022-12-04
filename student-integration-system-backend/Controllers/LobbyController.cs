@@ -5,6 +5,7 @@ using student_integration_system_backend.Entities;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.LobbyService;
+using student_integration_system_backend.Services.ReservationService;
 
 namespace student_integration_system_backend.Controllers;
 
@@ -13,10 +14,12 @@ namespace student_integration_system_backend.Controllers;
 public class LobbyController : ControllerBase
 {
     private readonly ILobbyService _lobbyService;
+    private readonly IReservationService _reservationService;
 
-    public LobbyController(ILobbyService lobbyService)
+    public LobbyController(ILobbyService lobbyService, IReservationService reservationService)
     {
         _lobbyService = lobbyService;
+        _reservationService = reservationService;
     }
 
     /// <summary>
@@ -137,6 +140,18 @@ public class LobbyController : ControllerBase
     {
         var message = _lobbyService.RejectInviteOrLeaveLobby(userId, lobbyId);
         return Ok(message);
+    }
+    
+    /// <summary>
+    /// Removes lobby and reservation
+    /// </summary>
+    [HttpDelete("deleteLobby/{lobbyId:int}")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<string> DeleteLobby(int lobbyId)
+    {
+        var messageLobby = _lobbyService.DeleteLobby(lobbyId);
+        var messageReservation = _reservationService.DeleteReservationByLobbyId(lobbyId);
+        return Ok(messageLobby + messageReservation);
     }
 
     /// <summary>
