@@ -79,6 +79,17 @@ public class ReservationServiceImpl : IReservationService
         return reservation;
     }
 
+    public Reservation GetReservationByLobbyId(int lobbyId)
+    {
+        var reservation = _dbContext.Reservations.FirstOrDefault(r => r.LobbyId == lobbyId);
+        if (reservation is null)
+        {
+            throw new NotFoundException("Reservation not found.");
+        }
+
+        return reservation;
+    }
+
     public string DeclinedReservation(int reservationId)
     {
         var reservation = GetReservationById(reservationId);
