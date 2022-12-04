@@ -80,9 +80,9 @@ public class ClientController : ControllerBase
     [HttpPost("createCustomPlace")]
     [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<CustomPlace> CreateCustomPlace(CreateCustomPlaceRequest request)
+    public ActionResult<CustomPlace> CreateCustomPlace(LobbyAtCustomPlaceRequest request, int userId)
     {
-        var response = _placeService.CreateCustomPlace(request);
+        var response = _placeService.CreateCustomPlace(request, userId);
         return Ok(response);
     }
     
@@ -104,9 +104,9 @@ public class ClientController : ControllerBase
     [HttpPatch("updateCustomPlace/{customPlaceId:int}")]
     [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<CustomPlace> UpdateCustomPlace(UpdateCustomPlaceRequest request, int customPlaceId)
+    public ActionResult<CustomPlace> UpdateCustomPlace(LobbyAtCustomPlaceRequest request)
     {
-        var response = _placeService.UpdateCustomPlace(customPlaceId, request);
+        var response = _placeService.UpdateCustomPlace(request);
         return response;
     }
 }

@@ -32,7 +32,7 @@ public class ReservationController : ControllerBase
     }
     
     /// <summary>
-    /// Get all confirmed reservation for specific lobby and day.
+    /// Get all confirmed reservation for specific place and day.
     /// </summary>
     [HttpGet("getConfirmedReservationsForOneDay")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -43,7 +43,7 @@ public class ReservationController : ControllerBase
     }
     
     /// <summary>
-    /// Get all sent reservation for specific lobby.
+    /// Get all sent reservation for specific place.
     /// </summary>
     [HttpGet("getSentReservationsForPlace")]
     [Authorize(Roles = RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -51,6 +51,17 @@ public class ReservationController : ControllerBase
     {
         var reservations = _reservationService.GetAllSentReservationsForPlace(placeId);
         return Ok(reservations);
+    }
+    
+    /// <summary>
+    /// Get reservation for specific lobby.
+    /// </summary>
+    [HttpGet("getReservationByLobby/{lobbyId:int}")]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Reservation> GetReservationsByLobby(int lobbyId)
+    {
+        var reservation = _reservationService.GetReservationByLobbyId(lobbyId);
+        return Ok(reservation);
     }
     
     /// <summary>

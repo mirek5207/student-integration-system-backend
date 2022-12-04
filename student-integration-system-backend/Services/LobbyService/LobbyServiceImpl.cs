@@ -31,8 +31,7 @@ public class LobbyServiceImpl : ILobbyService
         _clientService = clientService;
     }
 
-
-    public Lobby CreateLobby(CreateLobbyRequest request, int userId)
+    public Lobby CreateLobbyAtPlace(LobbyAtPlaceRequest request, int userId)
     {
         var lobbyOwner = _lobbyOwnerService.GetLobbyOwnerByUserId(userId) ?? _lobbyOwnerService.CreateLobbyOwner(userId);
         var lobby = new Lobby()
@@ -41,9 +40,7 @@ public class LobbyServiceImpl : ILobbyService
             Name = request.Name,
             StartDate = request.StartDate,
             Type = request.Type,
-            Place = (request.PlaceId is null) ? null : _placeService.GetPlaceById((int) request.PlaceId),
-            CustomPlace = (request.CustomPlaceId is null) ?
-                null : _customPlaceService.GetCustomPlaceById((int) request.CustomPlaceId),
+            Place = _placeService.GetPlaceById(request.PlaceId),
             LobbyOwner = lobbyOwner
         };
         _dbContext.Lobbies.Add(lobby);
@@ -51,7 +48,7 @@ public class LobbyServiceImpl : ILobbyService
         return lobby;
     }
 
-    public Lobby CreateLobbyAtPlace(CreateLobbyAtPlaceRequest request, int userId)
+    public Lobby CreateLobbyAtCustomPlace(LobbyAtCustomPlaceRequest request, int userId)
     {
         var lobbyOwner = _lobbyOwnerService.GetLobbyOwnerByUserId(userId) ?? _lobbyOwnerService.CreateLobbyOwner(userId);
         var lobby = new Lobby()
@@ -60,10 +57,36 @@ public class LobbyServiceImpl : ILobbyService
             Name = request.Name,
             StartDate = request.StartDate,
             Type = request.Type,
-            Place = _placeService.GetPlaceById((int) request.PlaceId),
+            CustomPlace =  _customPlaceService.GetCustomPlaceById((int) request.CustomPlaceId!),
             LobbyOwner = lobbyOwner
         };
         _dbContext.Lobbies.Add(lobby);
+        _dbContext.SaveChanges();
+        return lobby;
+    }
+
+    public Lobby UpdateLobbyAtPlace(LobbyAtPlaceRequest request, int lobbyId)
+    {
+        var lobby = GetLobbyById(lobbyId);
+        lobby.MaxSeats = request.MaxSeats;
+        lobby.Name = request.Name;
+        lobby.StartDate = request.StartDate;
+        lobby.Type = request.Type;
+        lobby.CustomPlace = null;
+        lobby.Place = _placeService.GetPlaceById(request.PlaceId);
+        _dbContext.SaveChanges();
+        return lobby;
+    }
+
+    public Lobby UpdateLobbyAtCustomPlace(LobbyAtCustomPlaceRequest request, int lobbyId)
+    {
+        var lobby = GetLobbyById(lobbyId);
+        lobby.MaxSeats = request.MaxSeats;
+        lobby.Name = request.Name;
+        lobby.StartDate = request.StartDate;
+        lobby.Type = request.Type;
+        lobby.CustomPlace = _customPlaceService.GetCustomPlaceById((int) request.CustomPlaceId!);
+        lobby.Place = null;
         _dbContext.SaveChanges();
         return lobby;
     }

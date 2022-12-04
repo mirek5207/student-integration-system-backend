@@ -3,7 +3,7 @@ using student_integration_system_backend.Entities;
 
 namespace student_integration_system_backend.Models.Request;
 
-public class CreateLobbyAtCustomPlaceRequest
+public class LobbyAtCustomPlaceRequest
 {
     public int MaxSeats { get; set; }
     public string Name { get; set; }
@@ -16,9 +16,9 @@ public class CreateLobbyAtCustomPlaceRequest
     public string? Description { get; set; }
 }
 
-public class CreateLobbyAtCustomPlaceRequestValidator : AbstractValidator<CreateLobbyAtCustomPlaceRequest>
+public class LobbyAtCustomPlaceRequestValidator : AbstractValidator<LobbyAtCustomPlaceRequest>
 {
-    public CreateLobbyAtCustomPlaceRequestValidator()
+    public LobbyAtCustomPlaceRequestValidator()
     {
         RuleFor(l => l.MaxSeats)
             .GreaterThan(0).WithMessage("MaxSeats have to be greater than 0");
