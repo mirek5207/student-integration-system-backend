@@ -7,6 +7,7 @@ using student_integration_system_backend.Models.Seeds;
 using student_integration_system_backend.Services.AccountService;
 using student_integration_system_backend.Services.AuthService;
 using student_integration_system_backend.Services.RoleService;
+using student_integration_system_backend.Services.UserRoleService;
 using student_integration_system_backend.Services.UserService;
 
 namespace student_integration_system_backend.Services.ModeratorService;
@@ -18,20 +19,24 @@ public class ModeratorServiceImpl : IModeratorService
     private readonly IAuthService _authService;
     private readonly IRoleService _roleService;
     private readonly IAccountService _accountService;
+    private readonly IUserRoleService _userRoleService;
 
-    public ModeratorServiceImpl(AppDbContext dbContext, IUserService userService, IAuthService authService, IRoleService roleService, IAccountService accountService)
+    public ModeratorServiceImpl(AppDbContext dbContext, IUserService userService, IAuthService authService, IRoleService roleService, IAccountService accountService, IUserRoleService userRoleService)
     {
         _dbContext = dbContext;
         _userService = userService;
         _authService = authService;
         _roleService = roleService;
         _accountService = accountService;
+        _userRoleService = userRoleService;
     }
 
     public AuthenticationResponse RegisterModerator(ModeratorSignUpRequest request)
     {
         var role = _roleService.GetRoleById(RoleType.ModeratorId);
-        var user = _userService.CreateUser(request.Login, request.Email, request.HashedPassword, role);
+        var user = _userService.CreateUser(request.Login, request.Email, request.HashedPassword);
+        _userRoleService.CreateUserRole(user, role);
+        _accountService.CreateAccount(user);
         CreateModerator(user,request.FirstName, request.SurName);
         
         return _authService.GenerateJwtToken(user);

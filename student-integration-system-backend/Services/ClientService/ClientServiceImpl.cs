@@ -19,21 +19,25 @@ public class ClientServiceImpl : IClientService
     private readonly IAuthService _authService;
     private readonly IRoleService _roleService;
     private readonly IAccountService _accountService;
+    private readonly IUserRoleService _userRoleService;
 
     public ClientServiceImpl(IUserService userService, AppDbContext dbContext, IAuthService authService,
-        IRoleService roleService, IAccountService accountService)
+        IRoleService roleService, IAccountService accountService, IUserRoleService userRoleService)
     {
         _userService = userService;
         _dbContext = dbContext;
         _authService = authService;
         _roleService = roleService;
         _accountService = accountService;
+        _userRoleService = userRoleService;
     }
 
     public AuthenticationResponse RegisterClient(ClientSignUpRequest request)
     {
         var role = _roleService.GetRoleById(RoleType.ClientId);
-        var user = _userService.CreateUser(request.Login, request.Email, request.HashedPassword, role);
+        var user = _userService.CreateUser(request.Login, request.Email, request.HashedPassword);
+        _userRoleService.CreateUserRole(user, role);
+        _accountService.CreateAccount(user);
         CreateClient(user, request.FirstName, request.SurName);
         return _authService.GenerateJwtToken(user);
     }

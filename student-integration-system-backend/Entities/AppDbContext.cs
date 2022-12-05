@@ -5,7 +5,6 @@ namespace student_integration_system_backend.Entities;
 
 public class AppDbContext : DbContext
 {
-    private readonly IEnumerable<IDataImport> _dataImport;
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Admin> Admins { get; set; }
     public DbSet<Client> Clients { get; set; }
@@ -23,20 +22,16 @@ public class AppDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<Report> Reports { get; set; }
 
-    public AppDbContext(DbContextOptions<AppDbContext>options, IEnumerable<IDataImport> dataImport) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext>options) : base(options)
     {
-        _dataImport = dataImport;
     }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserRole>().HasKey(sc => new { sc.UserId, sc.RoleId });
         modelBuilder.Entity<LobbyGuest>().HasKey(r => new { r.LobbyId, r.ClientId });
         modelBuilder.Entity<Report>().Property(p => p.ReportedUserId).IsRequired(false);
-        foreach (var dataImport in _dataImport)
-        {
-            dataImport.Seed(modelBuilder);
-        }
+        
     }
 
 }
