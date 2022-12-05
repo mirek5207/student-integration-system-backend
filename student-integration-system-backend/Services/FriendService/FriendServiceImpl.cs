@@ -117,7 +117,7 @@ public class FriendServiceImpl : IFriendService
             .Include(f => f.FriendReceiver)
             .Where(fr => fr.Status == FriendStatus.Friend &&
                          (fr.FriendSender.UserId == userId || fr.FriendReceiver.UserId == userId)).ToList();
-        if (friendships is null)
+        if (friendships.Count == 0)
         {
             throw new NotFoundException("Friendships not found");
         }
