@@ -92,18 +92,7 @@ public class ReservationServiceImpl : IReservationService
         _dbContext.SaveChanges();
         return "Reservation Deleted";
     }
-
-    public Reservation GetReservationByLobbyId(int lobbyId)
-    {
-        var reservation = _dbContext.Reservations.FirstOrDefault(r => r.LobbyId == lobbyId);
-        if (reservation is null)
-        {
-            throw new NotFoundException("Reservation not found.");
-        }
-
-        return reservation;
-    }
-
+    
     public string DeclinedReservation(int reservationId)
     {
         var reservation = GetReservationById(reservationId);
