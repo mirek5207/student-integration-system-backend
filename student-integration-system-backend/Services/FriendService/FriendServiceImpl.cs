@@ -36,6 +36,10 @@ public class FriendServiceImpl : IFriendService
 
     public bool CheckIfFriendshipExist(int userId, int friendUserId)
     {
+        if (userId == friendUserId)
+        {
+            throw new ForbiddenException("You can't invite yourself!");
+        }
         var friendshipExist = GetFriendship(userId, friendUserId) is not null;
         
         return friendshipExist;
