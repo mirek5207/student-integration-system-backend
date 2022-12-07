@@ -156,6 +156,10 @@ public class FriendServiceImpl : IFriendService
     public IEnumerable<Friend> GetAllFriendsNotInLobby(int userId, int lobbyId)
     {
         var clientLobbyGuests = _lobbyService.GetAllLobbyGuestsForLobby(lobbyId).Select(lg => lg.Client).ToList();
+        if (clientLobbyGuests.Count == 0)
+        {
+            return GetAllClientFriendships(userId);
+        }
         var friendsWithoutLobbyGuests = GetAllClientFriendships(userId).Where(fr =>
             clientLobbyGuests.Any(lg => fr.FriendSenderId != lg.Id && fr.FriendReceiverId != lg.Id)).ToList();
             
