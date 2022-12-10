@@ -102,20 +102,6 @@ public class ClientServiceImpl : IClientService
 
     public IEnumerable<Client> GetAllClientExceptFriends(int userId)
     {
-        /*var allClientFriendships = _dbContext.Friends
-            .Include(f => f.FriendSender)
-            .Include(f => f.FriendReceiver)
-            .Where(fr => fr.Status == FriendStatus.Friend &&
-                         (fr.FriendSender.UserId == userId || fr.FriendReceiver.UserId == userId)).ToList();
-        if (allClientFriendships.Count == 0)
-        {
-            return GetAllClientsExceptActiveUser(userId);
-        }
-
-        var allClientsWithoutFriends = GetAllClientsExceptActiveUser(userId).Where(c =>
-            allClientFriendships.Any(cFr => c.Id != cFr.FriendSenderId && c.Id != cFr.FriendReceiverId)).ToList();
-        */
-        
         var clients = _dbContext.Clients
             .Include(c => c.User).ThenInclude(u => u.Account).ToList();
         var friendships = _dbContext.Friends
