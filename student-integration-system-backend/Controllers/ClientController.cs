@@ -61,13 +61,13 @@ public class ClientController : ControllerBase
     }
     
     ///<summary>
-    /// Get all clients data except active user
+    /// Get all clients data except active user and its friends.
     /// </summary>
-    [HttpGet("getAllClients/{userId:int}")]
+    [HttpGet("getAllClientsExceptFriends/{userId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<IEnumerable<Client>> GetAllClientsExceptActiveUser(int userId)
+    public ActionResult<IEnumerable<Client>> GetAllClientsExceptFriends(int userId)
     {
-        var clients = _clientService.GetAllClientsExceptActiveUser(userId);
+        var clients = _clientService.GetAllClientExceptFriends(userId);
         return Ok(clients);
     }
     

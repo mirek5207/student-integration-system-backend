@@ -15,5 +15,5 @@ public interface IFriendService
     IEnumerable<Friend> GetAllClientFriendships(int userId);
     IEnumerable<Friend> GetAllClientInvites(int userId);
     IEnumerable<Friend> GetAllInvitedClients(int userId);
-    IEnumerable<Friend> GetAllFriendsNotInLobby(int userId, int lobbyId);
+    IEnumerable<Client> GetAllFriendsNotInLobby(int userId, int lobbyId);
 }

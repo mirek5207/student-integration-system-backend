@@ -12,4 +12,6 @@ public interface IClientService
     IEnumerable<Client> GetAllClients();
     IEnumerable<Client> GetAllClientsExceptActiveUser(int userId);
     Client GetClientByUserId(int userId);
+    IEnumerable<Client> GetAllClientExceptFriends(int userId);
+    IEnumerable<Client> GetClientsFromFriendshipsExceptActiveUser(IEnumerable<Friend> friends, int userId);
 }
