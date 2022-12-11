@@ -1,4 +1,5 @@
-﻿using student_integration_system_backend.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using student_integration_system_backend.Entities;
 using student_integration_system_backend.Exceptions;
 using student_integration_system_backend.Models.Request;
 using student_integration_system_backend.Services.ClientService;
@@ -48,7 +49,23 @@ public class CustomPlaceServiceImpl : ICustomPlaceService
         _dbContext.SaveChanges();
         return customPlace;
     }
-    
+
+    public IEnumerable<CustomPlace> GetClientCustomPlaces(int userId)
+    {
+        var client = _clientService.GetClientByUserId(userId);
+        var customPlaces = _dbContext.CustomPlaces.Where(cp => cp.ClientId == client.Id).ToList();
+        if (customPlaces.Count == 0)
+        {
+            throw new NotFoundException("Custom places not found");
+        }
+
+        foreach (var cp in customPlaces)
+        {
+            cp.Client = null;
+        }
+        return customPlaces;
+    }
+
     public CustomPlace GetCustomPlaceById(int customPlaceId)
     {
         var customPlace = _dbContext.CustomPlaces.FirstOrDefault(place => place.Id == customPlaceId);

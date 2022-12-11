@@ -10,4 +10,5 @@ public interface ICustomPlaceService
     void DeleteCustomPlace(int customPlaceId);
     CustomPlace GetCustomPlaceById(int customPlaceId);
     CustomPlace UpdateCustomPlace(LobbyAtCustomPlaceRequest request);
+    IEnumerable<CustomPlace> GetClientCustomPlaces(int userId);
 }

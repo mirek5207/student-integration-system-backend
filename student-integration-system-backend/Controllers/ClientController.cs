@@ -107,6 +107,18 @@ public class ClientController : ControllerBase
     public ActionResult<CustomPlace> UpdateCustomPlace(LobbyAtCustomPlaceRequest request)
     {
         var response = _placeService.UpdateCustomPlace(request);
-        return response;
+        return Ok(response);
+    }
+    
+    /// <summary>
+    /// Get all custom place belonging to client. Available for: Client
+    /// </summary>
+    [HttpGet("getCustomPlaces/{userId:int}")]
+    [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
+    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<IEnumerable<CustomPlace>> GetCustomPlacesForClient(int userId)
+    {
+        var response = _placeService.GetClientCustomPlaces(userId);
+        return Ok(response);
     }
 }
