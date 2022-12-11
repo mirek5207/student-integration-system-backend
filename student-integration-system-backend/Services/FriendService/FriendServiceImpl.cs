@@ -117,8 +117,8 @@ public class FriendServiceImpl : IFriendService
     public IEnumerable<Friend> GetAllClientFriendships(int userId)
     {
         var friendships = _dbContext.Friends
-            .Include(f => f.FriendSender)
-            .Include(f => f.FriendReceiver)
+            .Include(f => f.FriendSender).ThenInclude(fs => fs.User)
+            .Include(f => f.FriendReceiver).ThenInclude(fr => fr.User)
             .Where(fr => fr.Status == FriendStatus.Friend &&
                          (fr.FriendSender.UserId == userId || fr.FriendReceiver.UserId == userId)).ToList();
         if (friendships.Count == 0)
@@ -159,14 +159,16 @@ public class FriendServiceImpl : IFriendService
 
     public IEnumerable<Client> GetAllFriendsNotInLobby(int userId, int lobbyId)
     {
+        var clientFriends =
+            _clientService.GetClientsFromFriendshipsExceptActiveUser(GetAllClientFriendships(userId), userId).ToList();
         var clientLobbyGuests = _lobbyService.GetAllLobbyGuestsForLobby(lobbyId).Select(lg => lg.Client).ToList();
         if (clientLobbyGuests.Count == 0)
         {
-            return _clientService.GetClientsFromFriendshipsExceptActiveUser(GetAllClientFriendships(userId), userId);
+            return clientFriends;
         }
-        var friendsWithoutLobbyGuests = GetAllClientFriendships(userId).Where(fr =>
-            clientLobbyGuests.Any(lg => fr.FriendSenderId != lg.Id && fr.FriendReceiverId != lg.Id)).ToList();
+
+        clientFriends = clientFriends.Except(clientLobbyGuests).ToList();
         
-        return _clientService.GetClientsFromFriendshipsExceptActiveUser(friendsWithoutLobbyGuests, userId);
+        return clientFriends;
     }
 }

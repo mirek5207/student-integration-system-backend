@@ -110,10 +110,7 @@ public class ClientServiceImpl : IClientService
             .Where(fr => fr.Status == FriendStatus.Friend &&
                          (fr.FriendSender.UserId == userId || fr.FriendReceiver.UserId == userId)).ToList();
         var clientAndFriends = GetClientsFromFriendshipsExceptActiveUser(friendships, userId).ToList();
-        foreach (var c in clientAndFriends)
-        {
-            clients.Remove(c);
-        }
+        clients = clients.Except(clientAndFriends).ToList();
         clients.Remove(GetClientById(userId));
 
         return clients;
