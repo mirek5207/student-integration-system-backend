@@ -77,10 +77,10 @@ public class ClientController : ControllerBase
     /// <summary>
     /// Create custom place by client. Available for: Client
     /// </summary>
-    [HttpPost("createCustomPlace")]
+    [HttpPost("createCustomPlace/{userId:int}")]
     [SwaggerOperation(Tags = new[] { "Client Custom Place" })]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<CustomPlace> CreateCustomPlace(LobbyAtCustomPlaceRequest request, int userId)
+    public ActionResult<CustomPlace> CreateCustomPlace(CreateCustomPlaceRequest request, int userId)
     {
         var response = _placeService.CreateCustomPlace(request, userId);
         return Ok(response);

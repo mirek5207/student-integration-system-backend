@@ -119,11 +119,6 @@ public class LobbyController : ControllerBase
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Lobby> CreateLobbyAtCustomPlace(LobbyAtCustomPlaceRequest request, int userId)
     {
-        if (request.CustomPlaceId is null)
-        {
-            var customPlace = _customPlaceService.CreateCustomPlace(request, userId);
-            request.CustomPlaceId = customPlace.Id;
-        }
         var lobby = _lobbyService.CreateLobbyAtCustomPlace(request, userId);
         return Ok(lobby);
     }
@@ -146,15 +141,8 @@ public class LobbyController : ControllerBase
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<Lobby> UpdateLobbyAtCustomPlace(LobbyAtCustomPlaceRequest request, int lobbyId)
     {
-        var lobby = _lobbyService.GetLobbyById(lobbyId);
-        if (request.CustomPlaceId is null)
-        {
-            var customPlace = _customPlaceService.CreateCustomPlace(request, lobby.LobbyOwner.Client.UserId);
-            request.CustomPlaceId = customPlace.Id;
-        }
-
         _customPlaceService.UpdateCustomPlace(request);
-        lobby = _lobbyService.UpdateLobbyAtCustomPlace(request, lobbyId);
+        var lobby = _lobbyService.UpdateLobbyAtCustomPlace(request, lobbyId);
         return Ok(lobby);
     }
     

@@ -17,11 +17,11 @@ public class CustomPlaceServiceImpl : ICustomPlaceService
         _clientService = clientService;
     }
 
-    public CustomPlace CreateCustomPlace(LobbyAtCustomPlaceRequest request, int userId)
+    public CustomPlace CreateCustomPlace(CreateCustomPlaceRequest request, int userId)
     {
         var place = new CustomPlace
         {
-            Name = request.CustomPlaceName,
+            Name = request.Name,
             Latitude = request.Latitude,
             Longitude = request.Longitude,
             Client = _clientService.GetClientByUserId(userId),
