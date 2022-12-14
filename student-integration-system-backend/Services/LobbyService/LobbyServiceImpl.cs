@@ -191,7 +191,11 @@ public class LobbyServiceImpl : ILobbyService
 
     public IEnumerable<Lobby> GetAllPublicLobbies()
     {
-        var lobbies = _dbContext.Lobbies.Where(l => l.Type == LobbyType.Public);
+        var lobbies = _dbContext.Lobbies
+            .Include(l=> l.CustomPlace)
+            .Include(l=>l.Place)
+            .Include(l=> l.LobbyOwner.Client)
+            .Where(l => l.Type == LobbyType.Public);
         if (lobbies is null) throw new NotFoundException("Lobbies not found");
         return lobbies;
     }
