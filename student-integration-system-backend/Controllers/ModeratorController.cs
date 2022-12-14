@@ -66,7 +66,7 @@ public class ModeratorController : ControllerBase
     /// Get all clients. Available for: Moderator
     /// </summary>
     [HttpGet("getAllClients")]
-    [Authorize(Roles = RoleType.Moderator, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = RoleType.Moderator+ "," + RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<List<Client>> GetAllClients()
     {
         var response = _clientService.GetAllClients();
