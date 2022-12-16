@@ -7,17 +7,16 @@ public class UserReportRequest
 {
     public string Description { get; set; }
     public int ReportingUserId { get; set; }
-    public int ReportedUserId { get; set; }
+    public string ReportedUserLogin { get; set; }
 }
 public class UserReportRequestValidator : AbstractValidator<UserReportRequest>
 {
     public UserReportRequestValidator(AppDbContext dbContext)
     {
         RuleFor(e => e.ReportingUserId)
-            .NotEqual(e => e.ReportedUserId).WithMessage("Reporting user id is the same as reported user id")
             .NotEmpty().WithMessage("Reporting user id is required"); 
-        RuleFor(e => e.ReportedUserId)
-            .NotEmpty().WithMessage("Reported user id is required");
+        RuleFor(e => e.ReportedUserLogin)
+            .NotEmpty().WithMessage("Reported user login is required");
         RuleFor(e => e.Description)
             .NotEmpty().WithMessage("Description is required");
     }

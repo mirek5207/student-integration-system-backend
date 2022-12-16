@@ -22,7 +22,7 @@ public class PlaceController : ControllerBase
     /// Get all places
     /// </summary>
     [HttpGet("getAllPlaces")]
-    [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = RoleType.Client + "," + RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public ActionResult<IEnumerable<Place>> GetAllPlaces()
     {
         var response = _placeService.GetAllPlaces();

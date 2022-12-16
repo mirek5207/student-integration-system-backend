@@ -50,7 +50,7 @@ public class ReportServiceImpl : IReportService
     public Report CreateUserReport(UserReportRequest request)
     {
         var reportingUser = _userService.GetUserById(request.ReportingUserId);
-        var reportedUser = _userService.GetUserById(request.ReportedUserId);
+        var reportedUser = _userService.GetUserByLogin(request.ReportedUserLogin);
         var report = new Report
         {
             Description = request.Description,
