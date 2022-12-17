@@ -69,13 +69,13 @@ public class LobbyController : ControllerBase
     }
     
     /// <summary>
-    /// Returns all public lobbies
+    /// Returns all public lobbies with available seats without .
     /// </summary>
-    [HttpGet("allPublicLobbies")]
+    [HttpGet("allPublicLobbies/{userId:int}")]
     [Authorize(Roles = RoleType.Client, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public ActionResult<IEnumerable<Lobby>> GetAllPubicLobbies()
+    public ActionResult<IEnumerable<Lobby>> GetAllPubicLobbies(int userId)
     {
-        var lobbies = _lobbyService.GetAllPublicLobbies();
+        var lobbies = _lobbyService.GetAllPublicLobbiesWithAvailableSeats(userId);
         return Ok(lobbies);
     }
     

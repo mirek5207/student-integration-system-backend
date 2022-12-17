@@ -16,7 +16,7 @@ public interface ILobbyService
     string AcceptInviteToLobby(int userId, int lobbyId);
     IEnumerable<Lobby> GetAllLobbies();
     IEnumerable<Lobby> GetAllClientLobbies(int userId);
-    IEnumerable<Lobby> GetAllPublicLobbies();
+    IEnumerable<Lobby> GetAllPublicLobbiesWithAvailableSeats(int userId);
     IEnumerable<Lobby> GetAllLobbiesWhereClientIsGuest(int userId);
     IEnumerable<Lobby> GetAllLobbiesWhereClientIsInvited(int userId);
     IEnumerable<LobbyGuest> GetAllLobbyGuestsForLobby(int lobbyId);

@@ -162,12 +162,17 @@ public class LobbyServiceImpl : ILobbyService
 
     public string AcceptInviteToLobby(int userId, int lobbyId)
     {
+        var lobby = GetLobbyById(lobbyId);
         var lobbyGuest = _lobbyGuestService.GetLobbyGuestByUserIdForSpecificLobby(userId, lobbyId);
         if (lobbyGuest is null)
             throw new NotFoundException("Invite not found");
         if (lobbyGuest.Status == LobbyGuestStatus.Joined)
         {
             throw new ForbiddenException("You are already in this lobby");
+        }
+        if (lobby.LobbyGuests.Where(lg => lg.Status >= LobbyGuestStatus.Joined).ToList().Count == lobby.MaxSeats)
+        {
+            throw new ForbiddenException("Lobby is already full");
         }
         lobbyGuest.Status = LobbyGuestStatus.Joined;
         _dbContext.SaveChanges();
@@ -189,15 +194,22 @@ public class LobbyServiceImpl : ILobbyService
         return lobbies;
     }
 
-    public IEnumerable<Lobby> GetAllPublicLobbies()
+    public IEnumerable<Lobby> GetAllPublicLobbiesWithAvailableSeats(int userId)
     {
+        var client = _clientService.GetClientByUserId(userId);
         var lobbies = _dbContext.Lobbies
             .Include(l=> l.CustomPlace)
             .Include(l=>l.Place)
             .Include(l=> l.LobbyOwner.Client)
-            .Where(l => l.Type == LobbyType.Public);
-        if (lobbies is null) throw new NotFoundException("Lobbies not found");
-        return lobbies;
+            .Where(l => l.Type == LobbyType.Public && l.MaxSeats > l.LobbyGuests.Count).ToList();
+        var ownerLobbies = _dbContext.Lobbies.Where(l => l.LobbyOwnerId == client.Id).ToList();
+        var guestLobbies = _dbContext.Lobbies.Include(l => l.LobbyGuests)
+            .Where(l => (l.LobbyGuests.Where(lg => lg.Client == client && lg.Status == LobbyGuestStatus.Joined)
+                .ToList().Count != 0)).ToList();
+        var result = lobbies.Except(ownerLobbies);
+        result = result.Except(guestLobbies);
+        if (result is null) throw new NotFoundException("Lobbies not found");
+        return result;
     }
 
     public IEnumerable<Lobby> GetAllLobbiesWhereClientIsGuest(int userId)
