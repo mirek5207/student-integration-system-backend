@@ -42,8 +42,8 @@ public class ReservationServiceImpl : IReservationService
     public IEnumerable<ReservationResponse> GetAllConfirmedReservationsForSpecificPlaceAndDay(DateTime date, int placeId)
     {
         var reservations = _dbContext.Reservations.Where(r => r.Status == ReservationStatus.Confirmed
-                                                              && (r.StartDate.Date == date.Date ||
-                                                                  r.EndDate.Date == date.Date)
+                                                              && (r.StartDate.Date <= date.Date &&
+                                                                  r.EndDate.Date >= date.Date)
                                                               && r.PlaceId == placeId)
             .Include(r => r.Lobby.LobbyOwner.Client)
             .Select(r => MapReservationToReservationResponse(r))
