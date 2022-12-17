@@ -202,7 +202,7 @@ public class LobbyServiceImpl : ILobbyService
             .Include(l=>l.Place)
             .Include(l=> l.LobbyOwner.Client)
             .Where(l => l.Type == LobbyType.Public && l.MaxSeats > l.LobbyGuests.Count).ToList();
-        var ownerLobbies = _dbContext.Lobbies.Where(l => l.LobbyOwnerId == client.Id).ToList();
+        var ownerLobbies = _dbContext.Lobbies.Where(l => l.LobbyOwner.Client == client).ToList();
         var guestLobbies = _dbContext.Lobbies.Include(l => l.LobbyGuests)
             .Where(l => (l.LobbyGuests.Where(lg => lg.Client == client && lg.Status == LobbyGuestStatus.Joined)
                 .ToList().Count != 0)).ToList();
