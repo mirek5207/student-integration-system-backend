@@ -28,4 +28,15 @@ public class PlaceController : ControllerBase
         var response = _placeService.GetAllPlaces();
         return Ok(response);
     }
+    
+    /// <summary>
+    /// Get place by id
+    /// </summary>
+    [HttpGet("getPlaceById/{placeId:int}")]
+    [Authorize(Roles = RoleType.Client + "," + RoleType.PlaceOwner, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public ActionResult<Place> GetPlaceById(int placeId)
+    {
+        var response = _placeService.GetPlaceById(placeId);
+        return Ok(response);
+    }
 }
